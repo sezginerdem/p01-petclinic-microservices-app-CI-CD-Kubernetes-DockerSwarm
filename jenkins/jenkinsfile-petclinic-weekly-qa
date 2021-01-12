@@ -3,7 +3,7 @@ pipeline {
     environment {
         PATH=sh(script:"echo $PATH:/usr/local/bin", returnStdout:true).trim()
         APP_NAME="petclinic"
-        APP_REPO_NAME="clarusway-repo/petclinic-app-qa"
+        APP_REPO_NAME="sezgin-repo/petclinic-app-qa"
         APP_STACK_NAME="sezgin-petclinic-App-QA-1"
         CFN_KEYPAIR="sezgin-petclinic-qa.key"
         AWS_ACCOUNT_ID=sh(script:'export PATH="$PATH:/usr/local/bin" && aws sts get-caller-identity --query Account --output text', returnStdout:true).trim()
