@@ -3,9 +3,9 @@ pipeline {
     environment {
         PATH=sh(script:"echo $PATH:/usr/local/bin", returnStdout:true).trim()
         APP_NAME="petclinic"
-        APP_STACK_NAME="Matt-$APP_NAME-App-QA-${BUILD_NUMBER}"
+        APP_STACK_NAME="sezgin-$APP_NAME-App-QA-${BUILD_NUMBER}"
         AWS_REGION="us-east-1"
-        CFN_KEYPAIR="matt-${APP_NAME}-qa.key"
+        CFN_KEYPAIR="sezgin-${APP_NAME}-qa.key"
         CFN_TEMPLATE="./infrastructure/qa-docker-swarm-infrastructure-cfn-template.yml"
         ANSIBLE_PRIVATE_KEY_FILE="${JENKINS_HOME}/.ssh/${CFN_KEYPAIR}"
         ANSIBLE_HOST_KEY_CHECKING="False"
