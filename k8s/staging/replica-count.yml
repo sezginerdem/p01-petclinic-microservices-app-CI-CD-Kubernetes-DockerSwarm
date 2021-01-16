@@ -1,0 +1,70 @@
+# replica-count.yml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-gateway
+spec:
+  replicas: 3
+
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: api-gateway
+spec:
+  rules:
+    - host: petclinic04.clarusway.us
+      http:
+        paths:
+          - backend:
+              serviceName: api-gateway
+              servicePort: 8080
+
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: customers-service
+spec:
+  rules:
+  - host: petclinic04.clarusway.us
+    http:
+      paths:
+      - backend:
+          serviceName: customers-service
+          servicePort: 8081
+        path: /api/gateway(/|$)(.*)
+      - backend:
+          serviceName: customers-service
+          servicePort: 8081
+        path: /api/customer(/|$)(.*)
+
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: vets-service
+spec:
+  rules:
+  - host: petclinic04.clarusway.us
+    http:
+      paths:
+      - backend:
+          serviceName: vets-service
+          servicePort: 8083
+        path: /api/vet(/|$)(.*)
+
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: visits-service
+spec:
+  rules:
+  - host: petclinic04.clarusway.us
+    http:
+      paths:
+      - backend:
+          serviceName: visits-service
+          servicePort: 8082
+        path: /api/visit(/|$)(.*)
