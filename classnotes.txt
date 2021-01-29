@@ -30,7 +30,7 @@ MSP-2:
 
     
 MSP-3:
-------
+-------
 * ./mvnw clean test 
     |--> cleans the target folders under every module, compiles and then runs the unit tests.
 
