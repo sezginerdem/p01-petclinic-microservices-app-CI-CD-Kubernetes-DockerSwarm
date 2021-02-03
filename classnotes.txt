@@ -12,7 +12,7 @@ MSP-1:
 
 
 MSP-2:
--------
+------
 * git push --set-upstream origin dev == git push -u origin dev
 
 * git remote -v 
