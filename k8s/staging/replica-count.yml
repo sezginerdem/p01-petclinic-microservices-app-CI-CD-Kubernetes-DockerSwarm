@@ -13,7 +13,7 @@ metadata:
   name: api-gateway
 spec:
   rules:
-    - host: petclinic04.clarusway.us
+    - host: drsezginerdem.com
       http:
         paths:
           - backend:
@@ -27,7 +27,7 @@ metadata:
   name: customers-service
 spec:
   rules:
-  - host: petclinic04.clarusway.us
+  - host: drsezginerdem.com
     http:
       paths:
       - backend:
@@ -46,7 +46,7 @@ metadata:
   name: vets-service
 spec:
   rules:
-  - host: petclinic04.clarusway.us
+  - host: drsezginerdem.com
     http:
       paths:
       - backend:
@@ -61,7 +61,7 @@ metadata:
   name: visits-service
 spec:
   rules:
-  - host: petclinic04.clarusway.us
+  - host: drsezginerdem.com
     http:
       paths:
       - backend:
