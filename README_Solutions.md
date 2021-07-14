@@ -177,7 +177,7 @@ git merge feature/msp-4
 git push origin dev
 ```
 
-## MSP 5 - Prepare Development Server Cloudformation Template
+## MSP 5 - Prepare Development Server CloudFormation Template
 
 * Create `feature/msp-5` branch from `dev`.
 

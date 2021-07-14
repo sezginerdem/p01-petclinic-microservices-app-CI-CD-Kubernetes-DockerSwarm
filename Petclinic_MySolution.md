@@ -32,7 +32,7 @@
   2. Pipeline-nightly: dev branchinda yapilacak. Stabledir ama tum testlerden gecmemis bir versiyondur. Burada bir cron her gece 12 de dev branch inda kodu alacak testlere tabii tutacak ondan sonra functiona tutacak. Kullanilan toollar daha da artmaktadir.
   3. pipeline-weekly: Release branchindaki kodu her hafta build edip deploy edecek bir pipeline olusturacagi test icin deploy edilecek bir pipeline olusturuledilmis kod manuel testerlarin onune dusucek onlar manuel testleri yapacaklar.
   4. Pipeline-staging: Haftalik olacak. Release brancinda olacak. Her hafta pazar gunu kodu alacak builde tabi tutacak. Build edecek, functional testleri yapacak sonra manuel testler icin manuel testerlara gidicek sonra staging env a gidecek bundan sonrasi artik kod ile ne yapilacagi ile ilgili. User acceptance testleri yapilabilir. Alfa surecine beta surecine gidilebilir veya kullanicinin musterinin kendi testlerini yapmak icin musteriye sunulabilir. Yani kodu staging env a birakacagiz. 
-  5. Pipeline-webhook: Master branchinda yapacagimiz her comitte bizim kodumuzu bastan alacak build, unit test ve productiona deploy edecek. Yani urunu musteriye sunacak ortama deploy edecek.
+  5. Pipeline-prod-webhook: Master branchinda yapacagimiz her comitte bizim kodumuzu bastan alacak build, unit test ve productiona deploy edecek. Yani urunu musteriye sunacak ortama deploy edecek.
 
 # Proje 29 taskdan olusmaktadir.
 
