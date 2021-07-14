@@ -4,16 +4,13 @@
 ***
 This project aims to create full CI/CD Pipeline for microservice based applications using [Spring Petclinic Microservices Application](https://github.com/spring-petclinic/spring-petclinic-microservices). Jenkins Server deployed on Elastic Compute Cloud (EC2) Instance is used as CI/CD Server to build pipelines.
 
-## Problem Statement
-***
-
 ## Abstract
 ***
-Bu proje Spring firmasi tarafindan gelistirilmis Java tabanli bir petclinic microservis web uygulamasi. Uygulamanin frontend kismi React ile backend kismi ise java ile yazildi.
+This project is a Java-based petclinic-microservis web application developed by Spring company. The frontend part of the application was written in React and the backend part was written in Java.
 
-Uygulamanin **Home**, **owners** ve **veterenians** olmak uzere 3 ana menusu var.
+The application has 3 main menus: **Home**, **owners** and **veterenians**.
 
-Uygulamada 8 microservis bulunmakta ayrica prometheus ve grafananin oldugu bir monitoring servisi de bulunmaktadir. Bu servisler:
+The project consists of 8 microservices and there is also a monitoring service with Prometheus and Grafana. These services are:
   1. Admin-server
   2. Api-gateway(UI  api-gateway)
   3. Custom­er-server
@@ -23,7 +20,7 @@ Uygulamada 8 microservis bulunmakta ayrica prometheus ve grafananin oldugu bir m
   7. Vet Server
   8. Visit Service
 
-Fly veri tabani kullanilan cloud native bir uygulamadir.
+It is a cloud native application using Fly database.
 
 ### Development Diagram
 ***
@@ -32,10 +29,9 @@ Fly veri tabani kullanilan cloud native bir uygulamadir.
 
 ## Expected Outcome
 ***
-Farkli enviromenlar icin pipelinelar olusturarak uygulamanin build, unit test, deploy, auto test ve deploy to production asamalarini otomatize hale getirmek. 
+Automate the build, unit test, deploy, functional test and deploy to production stages of the application by creating pipelines for unit test, functional tests, manual QA, staging and production environments. 
 
-Bunun icin 5 farkli pipeline kurdum:
-    
+Bunun icin 5 pipeline kurdum:  
 **1. Pipeline-ci-job:** dev, feature ve bugfix branslari icin webhookla trigger edecek sekilde maven ile build edilecek ve jacoco, unit testlerini yapmak amaciyla pipeline kuruldu.
     
 **2. Pipeline-nightly:** dev bransi icin functional testleri yapmak uzere docker-swarm uzerinde deploy edilmis environment da nightly-cronjob ile build, unit test, deploy ve functional testler yapilacak. Stable dir ancak tum testlerden gecmemis versioyondur.
