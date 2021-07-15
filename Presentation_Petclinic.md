@@ -31,16 +31,21 @@ It is a cloud native application using Fly database.
 ***
 Automate the build, unit test, deploy, functional test and deploy to production stages of the application by creating pipelines for unit test, functional tests, manual QA, staging and production environments. 
 
-Bunun icin 5 pipeline kurdum:  
-**1. Pipeline-ci-job:** dev, feature ve bugfix branslari icin webhookla trigger edecek sekilde maven ile build edilecek ve jacoco, unit testlerini yapmak amaciyla pipeline kuruldu.
+I created 5 pipelines for this purpose:
+**1. Pipeline-ci-job:** To trigger the webhook for dev, feature and bugfix branches; Pipeline was created to run build , Jacoco and unit tests.
+* ***Tools:*** Jenkins, maven, git,github, jacoco.
     
-**2. Pipeline-nightly:** dev bransi icin functional testleri yapmak uzere docker-swarm uzerinde deploy edilmis environment da nightly-cronjob ile build, unit test, deploy ve functional testler yapilacak. Stable dir ancak tum testlerden gecmemis versioyondur.
+**2. Pipeline-nightly:** A pipeline was created with nightly-cronjob to perform build, unit test, deploy and functional tests in the environment deployed on docker-swarm to perform functional tests for the dev branch.
+* ***Tools:*** Jenkins, maven, git,github, docker, docker-compose, docker swarm, ansible, slenium with python, bash scripting, AWS cli, ecr, CloudFormation
+
+**3. Pipeline-weekly:** In the release branch, a weekly pipeline was created for build, unit test, deploy operations. An environment was created for performing the manual tests.
+* ***Tools:*** Jenkins, maven, git, github, docker,docker-compose, docker swarm, ansible, bash scripting, AWS cli, ECR, CloudFormation
     
-**3. Pipeline-weekly:** Release bransindaki kodu her hafta pazar gunu build, unit test, deploy edildi. Manuel testerlar manuel testlerini bu enviroment da gerceklestirecek. 
-    
-**4. Pipeline-staging:** Release bransinda kod her hafta pazar gunu build, unit test, functional test, manuel testerlar manuel testleri yapacak v staging env a gidecek. Bundan sonrasi kod ile ne yapilacagi ile ilgili. Alfa, beta surecine gidilebilir, User acceptance testlerini yapmak icin musteriye sunulabilir. 
-    
-**5. Pipeline-prod:** Master brancinda webhook ile trigger ederek yapacagimiz her commitde kodumuza build, unit test, deploy ve functional test asamalarini uygulayarak musteriye sunulacak production ortamina deploy edecek. 
+**4. Pipeline-staging:** For the staging environment in the release branch, I created a weekly pipeline for build, unit test, functional tests. In addition, manual tests were also performed in this environment. It's about what to do with post-pipeline code. The alpha, beta process can be gone, and it can be presented to the customer to perform user acceptance tests.
+* ***Tools:*** Jenkins, maven, git, github, docker, docker-compose, docker swarm, ansible, bash scripting, AWS cli, ECR , CloudFormation
+
+**5. Pipeline-prod:** For the production environment in the master branch, I created a pipeline where build, unit test, deploy and functional test stages are realized by triggering the webhook.
+* ***Tools:*** Jenkins, maven, git, github, docker, docker-compose, docker swarm, ansible, bash scripting, AWS cli, ECR , CloudFormation
 
 CI-job, nighty ve weekly pipeline lar docker swarm ile orchestrate edilmis iken staging ve prod pipeline lari ise kubernetes ile orchestrate edildi.
 
@@ -55,7 +60,7 @@ CI-job, nighty ve weekly pipeline lar docker swarm ile orchestrate edilmis iken 
 * **Containerisation:** Docker
 * **Container Orchestiration:** Kubernetes, Docker Swarm
 * **CI/CD Pipeline:** Jenkins
-* **Cloud:** AWS (EC2, VPC, EBS, IAM, ECR, AMI)
+* **Cloud:** AWS (EC2, VPC, EBS, IAM, ECR, AMI, Route53)
 * **Monitorong:** Prometheus, Grafana
 * **Version Control:** Git, GitHub
 * **Build**: Maven
