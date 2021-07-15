@@ -61,9 +61,7 @@ CI-job, nighty ve weekly pipeline lar docker swarm ile orchestrate edilmis iken 
 * **Container Orchestiration:** Kubernetes, Docker Swarm
 * **CI/CD Pipeline:** Jenkins
 * **Cloud:** AWS (EC2, VPC, EBS, IAM, ECR, AMI, Route53)
-* **Monitorong:** Prometheus, Grafana
+* **Monitoring:** Prometheus, Grafana
 * **Version Control:** Git, GitHub
 * **Build**: Maven
 * **Others:** Docker-Compose, Helm, Rancher
-
-
