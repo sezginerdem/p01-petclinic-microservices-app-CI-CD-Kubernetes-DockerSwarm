@@ -33,19 +33,19 @@ Automate the build, unit test, deploy, functional test and deploy to production 
 
 I created 5 pipelines for this purpose:
 **1. Pipeline-ci-job:** To trigger the webhook for dev, feature and bugfix branches; Pipeline was created to run build , Jacoco and unit tests.
-* ***Tools:*** Jenkins, maven, git,github, jacoco.
+* ***Tools:*** Jenkins, maven, git, github, groovy, jacoco.
     
 **2. Pipeline-nightly:** A pipeline was created with nightly-cronjob to perform build, unit test, deploy and functional tests in the environment deployed on docker-swarm to perform functional tests for the dev branch.
-* ***Tools:*** Jenkins, maven, git,github, docker, docker-compose, docker swarm, ansible, slenium with python, bash scripting, AWS cli, ecr, CloudFormation
+* ***Tools:*** Jenkins, maven, git,github, docker, docker-compose, docker swarm, ansible, slenium with python, bash scripting, groovy, AWS cli, ecr, CloudFormation
 
 **3. Pipeline-weekly:** In the release branch, a weekly pipeline was created for build, unit test, deploy operations. An environment was created for performing the manual tests.
-* ***Tools:*** Jenkins, maven, git, github, docker,docker-compose, docker swarm, ansible, bash scripting, AWS cli, ECR, CloudFormation
+* ***Tools:*** Jenkins, maven, git, github, docker,docker-compose, docker swarm, ansible, bash scripting, groovy, AWS cli, ECR, CloudFormation
     
 **4. Pipeline-staging:** For the staging environment in the release branch, I created a weekly pipeline for build, unit test, functional tests. In addition, manual tests were also performed in this environment. It's about what to do with post-pipeline code. The alpha, beta process can be gone, and it can be presented to the customer to perform user acceptance tests.
-* ***Tools:*** Jenkins, maven, git, github, docker, docker-compose, docker swarm, ansible, bash scripting, AWS cli, ECR , CloudFormation
+* ***Tools:*** Jenkins, maven, git, github, docker, docker-compose, docker swarm, ansible, bash scripting, groovy, AWS cli, ECR , CloudFormation
 
 **5. Pipeline-prod:** For the production environment in the master branch, I created a pipeline where build, unit test, deploy and functional test stages are realized by triggering the webhook.
-* ***Tools:*** Jenkins, maven, git, github, docker, docker-compose, docker swarm, ansible, bash scripting, AWS cli, ECR , CloudFormation
+* ***Tools:*** Jenkins, maven, git, github, docker, docker-compose, docker swarm, ansible, bash scripting, groovy, AWS cli, ECR , CloudFormation
 
 CI-job, nighty ve weekly pipeline lar docker swarm ile orchestrate edilmis iken staging ve prod pipeline lari ise kubernetes ile orchestrate edildi.
 
@@ -53,7 +53,7 @@ CI-job, nighty ve weekly pipeline lar docker swarm ile orchestrate edilmis iken 
 ***
 ![Pipelines to be configured](./project-501-pipelines.png)
 
-## Projede Kullanilan Toollar
+## Tools
 ***
 * **Programming Language:** Bash Script, Groovy
 * **Infrastucture as Code:** Ansible, CloudFormation
