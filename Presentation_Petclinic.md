@@ -65,4 +65,3 @@ CI-job, nighty ve weekly pipeline lar docker swarm ile orchestrate edilmis iken 
 * **Version Control:** Git, GitHub
 * **Build**: Maven
 * **Others:** Docker-Compose, Helm, Rancher
-
