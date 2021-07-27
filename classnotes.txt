@@ -1,5 +1,5 @@
 MSP-1:
------
+----
 * sudo usermod -a -G <group-name> <user-name>
     |--> -a : append
     |--> -G : Group
