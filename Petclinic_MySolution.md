@@ -5,7 +5,7 @@
 * Uygulamada 8 microservis bulunmakta(ayrica monitoring olarak prometheus ve grafana servisi bulunmakta)Bunlar:
   1. Admin-server
   2. Api-gateway(UI  api-gateway)
-  3. Custom­er-server
+  3. Customer-server
   4. Cofig-server(applicationlarin configurasyonlarinin bulundugu servis, mesela portlar degisebilir buportconfigurasyonlarini config serverdan aliyor, bu servis her mikroservisin baslagic asamasindailkparametrelerini vermekten sorumlu, kendilerini baslatirken bu configurasyonlari almadan baslatamiyorlar)
   5. Discovery-server(servislerin health checkini yapiyor, her servis discovery servise registrysini yapiyorbir cesit dns servis gibi healthy olup olmadigini kontrol ediyor, cloud angostik denilen iste busisteminherhangi bir cloud servisine bagimli olmadan calisabilmesidir )
   6. Hystrix Dashboard
@@ -101,9 +101,8 @@ chmod +x /usr/local/bin/docker-compose
 sudo yum install git -y
 sudo yum install java-11-amazon-corretto -y
 
-      2. MSP 2 - Prepare GitHub Repository for the Project
-      2.1.
-Local Development Environment
+## 2. MSP 2 - Prepare GitHub Repository for the Project
+2.1. Local Development Environment
 Prepare GitHub Repository for the Project
 MSP-2-1
 Clone the Petclinic app from the Clarusway repository Petclinic Microservices Application
@@ -112,10 +111,11 @@ Clone the Petclinic app from the Clarusway repository Petclinic Microservices A
       git config --global user.name sezginerdem
       git config --global user.mail drsezginerdem@gmail.com
       git remote add origin https://github.com/sezginerdem/p01-petclinic-microservices-app.git
-      
-      2.2.
+
+2.2.
 Local Development Environment
 Prepare GitHub Repository for the Project
+
 MSP-2-2
 Prepare base branches namely master , dev , release for DevOps cycle.
 
@@ -129,7 +129,8 @@ Prepare base branches namely master , dev , release for DevOps cycle.
       git branch release
       git checkout release
       git push -u origin release
-      3. MSP 3 - Check the Maven Build Setup on Dev Branch
+
+## 3. MSP 3 - Check the Maven Build Setup on Dev Branch
 Local Development Environment
 Check the Maven Build Setup on Dev Branch
 MSP-3
@@ -156,8 +157,7 @@ Check the Maven builds for test , package , and install phases on dev br
     • mvnw dosyalarini siliyorum ve uygulamayi install ediyorum.
       ./mvnw clean install
       
-      4. MSP 4 - Prepare a Script for Packaging the Application
-      
+4. MSP 4 - Prepare a Script for Packaging the Application      
 Local Development Environment
 Prepare a Script for Packaging the Application
 MSP-4
