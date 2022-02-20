@@ -3490,7 +3490,7 @@ git checkout release
 git branch feature/msp-23
 git checkout feature/msp-23
 
-    • infrastructure/sezgin-rke-controlplane-policy.json policesini ekledim. Bunlari amazonda olusturacagim ama kaybolmasin diye buraya koydum. Rancher in amazondaki ihtiyac duydugu yetkileri verdim. Tek bir rancher serverimiz oldugu icin manager yetkilerini de buna verecegim worker yetkilerini de buna verecegim. Eger 3 instance olsa idi birina manager digerlerine worker yetkileri verirdim.
+    • infrastructure/sezgin-rke-controlplane-policy.json policesini ekledim. Bunlari amazonda olusturacagim ama kaybolmasin diye buraya koydum. Rancher in amazondaki ihtiyac duydugu yetkileri verdim. Tek bir rancher serverimiz oldugu icin manager yetkilerini de buna verecegim worker yetkilerini de buna verecegim. Eger 3 instance olsa idi birine manager digerlerine worker yetkileri verirdim.
       
 {
 "Version": "2012-10-17",
@@ -3618,7 +3618,7 @@ aws ec2 create-key-pair --region us-east-1 --key-name sezgin-rancher.key --query
 chmod 400 ~/.ssh/sezgin-rancher.key
 
     • Rancher icin Ubuntu Server 20.04 LTS (HVM) ami-0885b1f6bd170450c (64-bit x86) with t2.medium type, 16 GB root volume, call-rke-cluster-sg security group, sezgin-rke-role IAM Role, Name:Sezgin-Rancher-Cluster-Instance tag, Key = kubernetes.io/cluster/sezgin-Rancher and Value = owned olan baska bir key daha ekledim and sezgin-rancher.key key-pair. 
-    •  Rancher dokumnantasyonundan bakildiginda Amazona rancher kurulacaksa bu taglari atamamiz gerektigi zaten yaziyor. Bu tagler sayesinde rancher nodelari takip ediyor. EC2 nun Subnet ve security-group icin tag atiyorum Key = kubernetes.io/cluster/sezgin-Rancher and Value = owned. Security groups>sezgin-rke-cluster-sg>tags> manage tags>key= kubernetes.io/cluster/sezgin-Rancher, Value = owned>SAVE. subnets>tags>add new tag> Key = kubernetes.io/cluster/sezgin-Rancher ve Value = owned>SAVE.
+    •  Rancher dokumantasyonundan bakildiginda Amazona rancher kurulacaksa bu taglari atamamiz gerektigi zaten yaziyor. Bu tagler sayesinde rancher nodelari takip ediyor. EC2 nun Subnet ve security-group icin tag atiyorum Key = kubernetes.io/cluster/sezgin-Rancher and Value = owned. Security groups>sezgin-rke-cluster-sg>tags> manage tags>key= kubernetes.io/cluster/sezgin-Rancher, Value = owned>SAVE. subnets>tags>add new tag> Key = kubernetes.io/cluster/sezgin-Rancher ve Value = owned>SAVE.
     • Jenkis server a girip docker yukleyecegim. Neden docker yuklemem gerekir Rancher serverimiza rancher kubernetes engine kurmzmiz icin dockera ihtiyamiz var.
     • Jenkins serveri bastion host olarak kullanip rancher a baglaniyorum.
       ssh -i “sezgin-rancher.key” ubuntu@<ip adresi>.compute.1.amazonaws.com
@@ -3701,14 +3701,14 @@ ingress:
     use-forwarded-headers: "true"
 
     • Rancher instance>security groups>edit inbound>add rule>ssh ve custom tcp(6443) ikisine de custom in yanina da jenkins server imin public ip adresini giriyorum.
-    • Kubernetes cluster kurmak icin Infrastructure klasorumun icinde asagidaki komutu girdim. RKE tool u jenkisn severindan rancer serverina kubernetes clusterinin kurulmunu sagliyor.
+    • Kubernetes cluster kurmak icin Infrastructure klasorumun icinde asagidaki komutu girdim. RKE tool u jenkins severindan rancer serverina kubernetes clusterinin kurulmunu sagliyor.
 
 rke up --config ./rancher-cluster.yml
 
     • Kubernetes clusterinin kurulumunun basarili olup olmadini kontrol ediyorum.
 
 mkdir -p ~/.kube
-mv ./kube_config_rancher-cluster.yml $HOME/.kube/config #bu komutla kube_config-cluster.yml dosyasini ./kube/config in icine tsiyorum ki kubectl komutlarini girdigimde oradan okudugu icin anlayabilsin.
+mv ./kube_config_rancher-cluster.yml $HOME/.kube/config #bu komutla kube_config-cluster.yml dosyasini ./kube/config in icine tasiyorum ki kubectl komutlarini girdigimde oradan okudugu icin anlayabilsin.
 chmod 400 ~/.kube/config
 kubectl get nodes
 kubectl get pods --all-namespaces
@@ -3734,7 +3734,9 @@ Install Rancher App on RKE Kubernetes Cluster
 
     • Eger bu stageden once instancelari kapatti isem infrastructure/rancher-cluster.yaml dosyasina gelip oradan private ip leri guncellemem gerekiyior. Sonrasinda infrastructure klasorunun icinde
 
+```bash
 rke down --config ./rancher-cluster.yml
+```
 
 komutu ile clusteri sokuyorum ve daha sonra yeniden
 
@@ -3784,7 +3786,7 @@ Create Staging and Production Environment with Rancher by creating new cluster f
 
     • new Password>confirm Password>manage multiple clusters>allow collection>I agree>cCONTINUE eger hata olursa helm uninstall ile tekrar kaldirip kurabilirim.
     • Rancherin AWS deki resourcelarimi yonetmesi icin Cloud credential tanimlayacagim. Sagda kosedeki isarette>cloud credential>add cloud credential>access key ve secret keyleri girdim>name>sezgin-aws-training-account.
-    • Ayni yerden sagdai ust koseden>Node templates>add template>amazon ec2>cloud credential>sezgin-aws-training-account>next>default vpc>select security group>standard>instance ozellikleri asagidaki gibi olacak>name>sezgin>key=os>value=rancheros OK diyerek tamamliyorum.
+    • Ayni yerden sagdaki ust koseden>Node templates>add template>amazon ec2>cloud credential>sezgin-aws-training-account>next>default vpc>select security group>standard>instance ozellikleri asagidaki gibi olacak>name>sezgin>key=os>value=rancheros OK diyerek tamamliyorum.
       
 Region            : us-east-1
 Security group    : create new sg (rancher-nodes)
@@ -3820,8 +3822,8 @@ Worker            : checked
 
     • Consola gidip 3 adet instance olusup olmadigini kontrol ediyorum. 
     • Petclinic-cluster-staging icinde namespace olusturdum. Petclinic-cluster-staging>Project/namespaces>Project Default>add namespace>petclinic-staging-ns>CREATE
-    • ECR repository olusturdum. Jenkins Dashboard>new item>freestyleProject>reate-ecr-docker-registry-for-petclinic-staging>OK>execute shell>
-
+    • ECR repository olusturdum. Jenkins Dashboard>new item>freestyle Project>reate-ecr-docker-registry-for-petclinic-staging>OK>execute shell>
+```bash
 PATH="$PATH:/usr/local/bin"
 APP_REPO_NAME="sezgin-repo/petclinic-app-staging"
 AWS_REGION="us-east-1"
@@ -3831,10 +3833,11 @@ aws ecr create-repository \
   --image-scanning-configuration scanOnPush=false \
   --image-tag-mutability MUTABLE \
   --region ${AWS_REGION}
-
+```
     • BUILD ve repository olustu.
     • Imagelarima tag atadim bunun icin bir scriptt yazdim. jenkins/prepare-tags-ecr-for-staging-docker-images.sh
 
+```bash
 MVN_VERSION=$(. ${WORKSPACE}/spring-petclinic-admin-server/target/maven-archiver/pom.properties && echo $version)
 export IMAGE_TAG_ADMIN_SERVER="${ECR_REGISTRY}/${APP_REPO_NAME}:admin-server-staging-v${MVN_VERSION}-b${BUILD_NUMBER}"
 MVN_VERSION=$(. ${WORKSPACE}/spring-petclinic-api-gateway/target/maven-archiver/pom.properties && echo $version)
@@ -3853,9 +3856,10 @@ MVN_VERSION=$(. ${WORKSPACE}/spring-petclinic-visits-service/target/maven-archiv
 export IMAGE_TAG_VISITS_SERVICE="${ECR_REGISTRY}/${APP_REPO_NAME}:visits-service-staging-v${MVN_VERSION}-b${BUILD_NUMBER}"
 export IMAGE_TAG_GRAFANA_SERVICE="${ECR_REGISTRY}/${APP_REPO_NAME}:grafana-service"
 export IMAGE_TAG_PROMETHEUS_SERVICE="${ECR_REGISTRY}/${APP_REPO_NAME}:prometheus-service"
+```
 
     • Imagelarimi build etmek icin bir script yazdim. jenkins/build-staging-docker-images-for-ecr.sh
-
+```bash
 docker build --force-rm -t "${IMAGE_TAG_ADMIN_SERVER}" "${WORKSPACE}/spring-petclinic-admin-server"
 docker build --force-rm -t "${IMAGE_TAG_API_GATEWAY}" "${WORKSPACE}/spring-petclinic-api-gateway"
 docker build --force-rm -t "${IMAGE_TAG_CONFIG_SERVER}" "${WORKSPACE}/spring-petclinic-config-server"
@@ -3866,9 +3870,9 @@ docker build --force-rm -t "${IMAGE_TAG_VETS_SERVICE}" "${WORKSPACE}/spring-petc
 docker build --force-rm -t "${IMAGE_TAG_VISITS_SERVICE}" "${WORKSPACE}/spring-petclinic-visits-service"
 docker build --force-rm -t "${IMAGE_TAG_GRAFANA_SERVICE}" "${WORKSPACE}/docker/grafana"
 docker build --force-rm -t "${IMAGE_TAG_PROMETHEUS_SERVICE}" "${WORKSPACE}/docker/prometheus"
-
+```
     • Imagelari push etmek icin script yazdim. jenkins/push-staging-docker-images-to-ecr.sh
-
+```bash
 aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REGISTRY}
 docker push "${IMAGE_TAG_ADMIN_SERVER}"
 docker push "${IMAGE_TAG_API_GATEWAY}"
@@ -3880,18 +3884,21 @@ docker push "${IMAGE_TAG_VETS_SERVICE}"
 docker push "${IMAGE_TAG_VISITS_SERVICE}"
 docker push "${IMAGE_TAG_GRAFANA_SERVICE}"
 docker push "${IMAGE_TAG_PROMETHEUS_SERVICE}"
-
+```
     • Jenkins servera Rancher CLI yukledim.
 
+```bash
 curl -SsL "https://github.com/rancher/cli/releases/download/v2.4.9/rancher-linux-amd64-v2.4.9.tar.gz" -o "rancher-cli.tar.gz"
 tar -zxvf rancher-cli.tar.gz
 sudo mv ./rancher-v2.4.9/rancher /usr/local/bin/rancher
 chmod +x /usr/local/bin/rancher
 rancher --version
+```
 
     • Rancher serverda API-KEY kurdum bu API-KEY vasitasiyla jenkins serverin rancherla gorusmesini sagladim. Rancher>sag ustteki kosedki isaret>API&Keys>Add key>Description>petclinic-key>Create bunu kaydettim cunku bir kez cikiyor. Jenkins>Dashboard>managejenkins>manage credentials>Jenkins global>global credentials>add credentials>username=rancherdaki cikan ekrandaki access keyi yapistirdim>password=secret key>id=rancher-petclinic-credentials(jenkinsfile da degisken olarak bu ismi kullanmistim)
     • 4. pipeline kurmak icin petclinic-staging adinda bir pipeline kurdum. jenkins/jenkinsfile-petclinic-staging. Project/namespaces>petclinic-staging-ns>sag uc nokta>view in api>project id> tirnak arasini kopyala>RANCHER_CONTEXT degiskenine kopyala.
 
+```groovy
 pipeline {
     agent { label "master" }
     environment {
@@ -3980,18 +3987,18 @@ pipeline {
         }
     }
 }
-
+```
 
     • staging/replica-count.yaml fileinin icinde>host: larin isimlerini petclinic-staging-drsezginerdem.com olarak degistirdim.
     • commit ve push
-
+```bash
 git add .
 git commit -m 'added jenkinsfile petclinic-staging for release branch'
 git push --set-upstream origin feature/msp-26
 git checkout release
 git merge feature/msp-26
 git push origin release
-
+```
     • Jenkins>Dashboard>newitem>pipeline>petclinic-prod>OK>Build periodically> 59 23 * * 0> Pipeline script from SCM>Git>Repo URL>Branch>release>jenkins/jenkinsfile-petclinic-staging>SAVE and BUILD.
     • Kubernetesde Route 53 kurdum. Clusterdaki bir instancein publicIp adresini al>Route 53>hosted zone>domainName>create record>simple record>define simple record>petclinic-staging.drsezginerdem.com> Ip adress or another value>altina yapistir>define single record>create record. Bu islemlerle route 53 uzerinden siteme ulasabiliyorum.
 
@@ -4011,7 +4018,7 @@ git branch feature/msp-27
 git checkout feature/msp-27
 
     • Production pipeline icin ecr repo olusturdum. jenkins Dashboard>new item>freestyleProject>create-ecr-docker-registry-for-petclinic-prod>OK>execute shell>
-    • 
+```bash   
       PATH="$PATH:/usr/local/bin"
       APP_REPO_NAME="sezgin-repo/petclinic-app-staging"
       AWS_REGION="us-east-1"
@@ -4021,10 +4028,10 @@ git checkout feature/msp-27
         --image-scanning-configuration scanOnPush=false \
         --image-tag-mutability MUTABLE \
         --region ${AWS_REGION}
-      
+```      
     • BUILD. ECR olustu.
     • Imagelari taglemek icin script yazdim Jenkins/prepare-tags-ecr-for-prod-docker-images.sh
-
+```bash
 MVN_VERSION=$(. ${WORKSPACE}/spring-petclinic-admin-server/target/maven-archiver/pom.properties && echo $version)
 export IMAGE_TAG_ADMIN_SERVER="${ECR_REGISTRY}/${APP_REPO_NAME}:admin-server-v${MVN_VERSION}-b${BUILD_NUMBER}"
 MVN_VERSION=$(. ${WORKSPACE}/spring-petclinic-api-gateway/target/maven-archiver/pom.properties && echo $version)
@@ -4043,10 +4050,11 @@ MVN_VERSION=$(. ${WORKSPACE}/spring-petclinic-visits-service/target/maven-archiv
 export IMAGE_TAG_VISITS_SERVICE="${ECR_REGISTRY}/${APP_REPO_NAME}:visits-service-v${MVN_VERSION}-b${BUILD_NUMBER}"
 export IMAGE_TAG_GRAFANA_SERVICE="${ECR_REGISTRY}/${APP_REPO_NAME}:grafana-service"
 export IMAGE_TAG_PROMETHEUS_SERVICE="${ECR_REGISTRY}/${APP_REPO_NAME}:prometheus-service"
-
+```
 
     • Build icin script yazdim jenkins/build-prod-docker-images-for-ecr.sh
 
+```bash
 docker build --force-rm -t "${IMAGE_TAG_ADMIN_SERVER}" "${WORKSPACE}/spring-petclinic-admin-server"
 docker build --force-rm -t "${IMAGE_TAG_API_GATEWAY}" "${WORKSPACE}/spring-petclinic-api-gateway"
 docker build --force-rm -t "${IMAGE_TAG_CONFIG_SERVER}" "${WORKSPACE}/spring-petclinic-config-server"
@@ -4057,9 +4065,10 @@ docker build --force-rm -t "${IMAGE_TAG_VETS_SERVICE}" "${WORKSPACE}/spring-petc
 docker build --force-rm -t "${IMAGE_TAG_VISITS_SERVICE}" "${WORKSPACE}/spring-petclinic-visits-service"
 docker build --force-rm -t "${IMAGE_TAG_GRAFANA_SERVICE}" "${WORKSPACE}/docker/grafana"
 docker build --force-rm -t "${IMAGE_TAG_PROMETHEUS_SERVICE}" "${WORKSPACE}/docker/prometheus"
-
+```
     • Imagelari push etmek icin script yazdim jenkins/push-prod-docker-images-to-ecr.sh
 
+```bash
 aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REGISTRY}
 docker push "${IMAGE_TAG_ADMIN_SERVER}"
 docker push "${IMAGE_TAG_API_GATEWAY}"
@@ -4071,7 +4080,7 @@ docker push "${IMAGE_TAG_VETS_SERVICE}"
 docker push "${IMAGE_TAG_VISITS_SERVICE}"
 docker push "${IMAGE_TAG_GRAFANA_SERVICE}"
 docker push "${IMAGE_TAG_PROMETHEUS_SERVICE}"
-
+```
     • pipeline icin jenkinsfile olusturdum. jenkins/jenkinsfile-petclinic-prod
 
 pipeline {
