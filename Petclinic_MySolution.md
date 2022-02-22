@@ -29,11 +29,11 @@
 * Bu Projede amacim pipeline olusturmak. Projenin kodunu once kendi github hesabima yukledim. Branchlar olusturdum Jenkinsle o kodlari github hesabimdan cektim ve build ettim. JUnit ile yazilmis 3 tane unit test yazilmis onlarla unit testlerimi gerceklestirdim. Unit test asamasi basari ile gecildi ve QA otomation(functional) testler icin uygulamayi deploy eettim. Seleniumla 4 tane functional testlere tabi tuttum. Bunlar da test takiminin gorevi onlar tarafindan hazirlanmis olan testlere tabi tuttum. Buraya kadarki asamalari docker swarm ile yaptim ama bundan sonraki asamalari kubernetes ile gerceklestirdim. Daha sonra staging enviroment a gonderdim burada user acceptance ve QA testleri yaptim sonra productiona deployettim ve en sonunda prometheus ve grafana ile monintor edip projeyi bitirdim.
 
 * Proje kapsaminda 5 tane pipeline olusturdum. 
-  1. Pipeline-ci-job: dev, feature ve bugfix branchlari icin. Biri commit edildiginde jacoco ve Junit testleri yapildi. Commit icin git hesabimda olusturmus oldugum degisikler webhookla trigger edildi ve mavenla build teste tabi tutuldu ve birakildi. Bu pipeline bu asamaya kadar olacak. 
-  2. Pipeline-nightly: dev branchinda yapilacak. Stabledir ama tum testlerden gecmemis bir versiyondur. Burada bir cron her gece 12 de dev branch inda kodu alacak testlere tabii tutacak ondan sonra functiona tutacak. Kullanilan toollar daha da artmaktadir.
-  3. pipeline-weekly: Release branchindaki kodu her hafta build edip deploy edecek bir pipeline olusturacagi test icin deploy edilecek bir pipeline olusturuledilmis kod manuel testerlarin onune dusucek onlar manuel testleri yapacaklar.
-  4. Pipeline-staging: Haftalik olacak. Release brancinda olacak. Her hafta pazar gunu kodu alacak builde tabi tutacak. Build edecek, functional testleri yapacak sonra manuel testler icin manuel testerlara gidicek sonra staging env a gidecek bundan sonrasi artik kod ile ne yapilacagi ile ilgili. User acceptance testleri yapilabilir. Alfa surecine beta surecine gidilebilir veya kullanicinin musterinin kendi testlerini yapmak icin musteriye sunulabilir. Yani kodu staging env a birakacagiz. 
-  5. Pipeline-prod-webhook: Master branchinda yapacagimiz her comitte bizim kodumuzu bastan alacak build, unit test ve productiona deploy edecek. Yani urunu musteriye sunacak ortama deploy edecek.
+  1. **Pipeline-ci-job:** dev, feature ve bugfix branchlari icin. Biri commit edildiginde jacoco ve Junit testleri yapildi. Commit icin git hesabimda olusturmus oldugum degisikler webhookla trigger edildi ve mavenla build teste tabi tutuldu ve birakildi. Bu pipeline bu asamaya kadar olacak. 
+  2. **Pipeline-nightly:** dev branchinda yapilacak. Stabledir ama tum testlerden gecmemis bir versiyondur. Burada bir cron her gece 12 de dev branch inda kodu alacak testlere tabii tutacak ondan sonra functiona tutacak. Kullanilan toollar daha da artmaktadir.
+  3. **Pipeline-weekly:** Release branchindaki kodu her hafta build edip deploy edecek bir pipeline olusturacagi test icin deploy edilecek bir pipeline olusturuledilmis kod manuel testerlarin onune dusucek onlar manuel testleri yapacaklar.
+  4. **Pipeline-staging:** Haftalik olacak. Release brancinda olacak. Her hafta pazar gunu kodu alacak builde tabi tutacak. Build edecek, functional testleri yapacak sonra manuel testler icin manuel testerlara gidicek sonra staging env a gidecek bundan sonrasi artik kod ile ne yapilacagi ile ilgili. User acceptance testleri yapilabilir. Alfa surecine beta surecine gidilebilir veya kullanicinin musterinin kendi testlerini yapmak icin musteriye sunulabilir. Yani kodu staging env a birakacagiz. 
+  5. **Pipeline-prod-webhook:** Master branchinda yapacagimiz her comitte bizim kodumuzu bastan alacak build, unit test ve productiona deploy edecek. Yani urunu musteriye sunacak ortama deploy edecek.
 
 # Proje 29 taskdan olusmaktadir.
 
@@ -78,7 +78,7 @@
 | Production Deployment Setup | Set Domain Name and TLS for Production | MSP-28  | Set Domain Name and TLS for Production Pipeline with Route 53 | feature/msp-28|
 | Production Deployment Setup | Set Monitoring Tools | MSP-29  | Set Monitoring tools, Prometheus and Grafana | |
 
-## MSP 1 - Prepare Development Server Manually on EC2 Instance
+# MSP 1 - Prepare Development Server Manually on EC2 Instance
 
 * Prepare development server manually on Amazon Linux 2 for developers, enabled with `Docker`,  `Docker-Compose`,  `Java 11`,  `Git`.
 
@@ -89,6 +89,7 @@
     • Ec2 ya gelerek github repomdaki dosyalarimi pull ettim.
     • Docker, Docker-compose, Git, java-11 kurulumunu yaptim.
 Kullanilan userdata asagidaki gibidir:
+```bash
 #! /bin/bash
 sudo yum update -y
 sudo hostnamectl set-hostname petclinic-dev-server
@@ -101,19 +102,21 @@ sudo curl -L "https://github.com/docker/compose/releases/download/1.26.2/docker-
 chmod +x /usr/local/bin/docker-compose
 sudo yum install git -y
 sudo yum install java-11-amazon-corretto -y
+```
 
-## 2. MSP 2 - Prepare GitHub Repository for the Project
-2.1. Local Development Environment
+# 2. MSP 2 - Prepare GitHub Repository for the Project
+## 2.1. Local Development Environment
 Prepare GitHub Repository for the Project
 MSP-2-1
 Clone the Petclinic app from the Clarusway repository Petclinic Microservices Application
 
     • git configurasyon ayarlarini yaptim.
+      ```bash
       git config --global user.name sezginerdem
       git config --global user.mail drsezginerdem@gmail.com
       git remote add origin https://github.com/sezginerdem/p01-petclinic-microservices-app.git
-
-2.2.
+      ```
+## 2.2.
 Local Development Environment
 Prepare GitHub Repository for the Project
 
@@ -131,7 +134,7 @@ Prepare base branches namely master , dev , release for DevOps cycle.
       git checkout release
       git push -u origin release
 
-## 3. MSP 3 - Check the Maven Build Setup on Dev Branch
+# 3. MSP 3 - Check the Maven Build Setup on Dev Branch
 Local Development Environment
 Check the Maven Build Setup on Dev Branch
 MSP-3
@@ -145,20 +148,30 @@ Check the Maven builds for test , package , and install phases on dev br
       
     • Mvn i yuklemedik ama bash script ./mvnw komutunu calistirabiliyor. Kok klasorunun altinda pom.xml dosyasini otomatik olarak buluyor dockerfile da oldugu gibi sonra calistirabiliyor herhnagi bir yuklemeye gerek kalmiyor. 
     • Petclinic uygulamasinin testini yaptim.
+      ```bash
       ./mvnw clean test
+      ```
     • Permission denied erroru verdi. Bunun icin execute yetkisi verdim.
+      ```bash
       chmod +x mvnw
+      ```
     • Yeniden test komutunu girdim. Testlerimi yaptim.
+      ```bash
       ./mvnw clean test
+      ```
     • gerekli library leri mvn repodan indirmeye basladi. Ilk seferde uzun suruyor ama sonrasinda indirme olmadigi icin sonraki komutlarda bu kadar uzun surmeyecek. Bu komut ile validate compile ve test komutlarina kadar calisti. Sonraki asamalar calismadi. Yani executable bir dosya olusturmadi cunku packaging asamasina gecmedi bu komutla.
     • Bu test ile source kodumu derledim ve her bir source kodumun unit testlerini yaptim. Bu asamada her bir micro servisimin ayri ayri testlerini yaptim. Kodumun hatasiz oldugunu gormek icin bunu yaptim. Eger build etmese idim kodumun hatali olup olmadigini goremeyecektim. Source kodum unit testlerini basari ile gecti.
     • Uygulamayi paketlemek icin asagidaki kodu girdim. Uygulamami kurulmaya hazir bir .jar dosyasi haline getirdim. Clean komutu ile once mvn dosyalarini siliyor ondan sonra packaging yapiyor. Clean yapmak zorunda degilim cunku her sey tamam testlerden gecti sadece packaging yapabilirim ama bu asamalari gecmek istemiyorum yeniden yapmasini istiyorum. Bunu yapmak icin parametre girip degistirebilirim. 
+      ```bash
       ./mvnw clean package
+      ```
     • bu komuttan sonra ec2 home icinde .m2 dosyasi goruluyor. Bu dosya mvn in home u. 
     • mvnw dosyalarini siliyorum ve uygulamayi install ediyorum.
+      ```bash
       ./mvnw clean install
+      ```
       
-4. MSP 4 - Prepare a Script for Packaging the Application      
+# 4. MSP 4 - Prepare a Script for Packaging the Application      
 Local Development Environment
 Prepare a Script for Packaging the Application
 MSP-4
@@ -166,21 +179,27 @@ Prepare a script to package the application with Maven wrapper
 feature/msp-4
       
     • dev den feature branch olusturdum
+      ```bash
       git checkout dev
       git branch feature/msp-4
       git checkout feature/msp-4
+      ```
     • Kok dizini altinda package-with-mvn-wrapper.sh adinda script dosyasi olusturdum. Scriptin icine asagidaki komutu koydum.
+      ```bash
       ./mvnw clean package
+      ```
 
     • Commit ve push ettim.
+      ```bash
       git add .
       git commit -m 'added packaging script'
       git push --set-upstream origin feature/msp-4
       git checkout dev
       git merge feature/msp-4
       git push origin dev
+      ```
     • her zaman dev branch inda calisacagim icin dev branch ini default branch yapabilirim. Github imdan repository>settings>default barnch dev>update
-      5. MSP 5 - Prepare Development Server Cloudformation Template
+# 5. MSP 5 - Prepare Development Server Cloudformation Template
       
 Local Development Environment
 Prepare Development Server Cloudformation Template
@@ -189,11 +208,14 @@ Prepare development server script with Cloudformation template for developers, e
 feature/msp-5
       
     • dev den feature branch olusturdum
+      ```bash
       git checkout dev
       git branch feature/msp-5
       git checkout feature/msp-5
+      ```
     • Bundan onceki tum asamalari kapsayan dev-server-for-petclinic-app-cfn-template.yml adinda bir CF hazirladim. Bunu da kok dizinin altinda olusturdugum infrastructure klasorunun icine koydum. Burada userdatada kendi repomun ismimi yazmam onemli.
 
+```yaml
 AWSTemplateFormatVersion: 2010-09-09
 
 Description: >
@@ -303,16 +325,18 @@ Outputs:
   PetclinicServerDNSName:
     Description: Petclinic App URL
     Value: !GetAtt PetclinicServer.PublicDnsName
-
+```
 
     • Commit ve push ettim.
+      ```bash
       git add .
       git commit -m 'added cloudformation template for dev server'
       git push --set-upstream origin feature/msp-5
       git checkout dev
       git merge feature/msp-5
       git push origin dev
-      6. MSP 6 - Prepare Dockerfiles for Microservices
+      ```
+# 6. MSP 6 - Prepare Dockerfiles for Microservices
       
 Local Development Build
 Prepare Dockerfiles for Microservices
@@ -321,36 +345,38 @@ MSP-6
 Prepare Dockerfiles for each microservices.
       
     • yeni feature yarattim
+      ```bash
       git checkout dev
       git branch feature/msp-6
       git checkout feature/msp-6
+      ```
     • Her bir microservisleri calistirmak icin bu microservisleri image haline getirmek icin bunlarin docker file larini olusturuyorum.
     • admin-server klasorunun altinda spring-petclinic-admin-server docker file ini olusturdum.
-      
-      FROM openjdk:11-jre #neden java jdk degil de open jdk image cunku boyutu kucuk requirements larimi karsiliyor, bende maven oldugu icin javanin compilelarina ihtiyacim yok o da olunca imagein boyutu buyuyor. Biri 400 digeri 100 mb
-      ARG DOCKERIZE_VERSION=v0.6.1 #image olustururken build ederken kolaylik saglamak acisindan bir degisken atamak icin ARG komutunun kullandim. Version lar yenilenirken her seferinde ugrasmak istemedim
-      ARG EXPOSED_PORT=9090 #expose portunun degisme ihtimalina karsi bunu da arg icine koydum
-      ENV SPRING_PROFILES_ACTIVE docker #container olusurken icine env degiskeni eklemek icin yazdim. Developerlarin soyledigi env i koydum. Bunu da nerden bulabilirim. Customer service klasorunde bootstrap.yaml dosyasinin icinde port bilgisinde localhost dan degil de dockerdan alacagimiz bilgisi var. Bu da config serverda zaten bildirilmis ben de ona gore bu degiskeni atamam gerekiyor.
-      ADD https://github.com/jwilder/dockerize/releases/download/${DOCKERIZE_VERSION}/dockerize-alpine-linux-amd64-${DOCKERIZE_VERSION}.tar.gz dockerize.tar.gz #github dan alpine linux dosyasini cekiyorum
-      RUN tar -xzf dockerize.tar.gz #tar klasorunu aciyor
-      RUN chmod +x dockerize #executable yetkisi verdim
-      ADD ./target/*.jar /app.jar #Mvn clean test yaptiktan sonra her bir micro serviste target klasoru olusacak ve onun icinde de .jar dosyalari olusacak. ./target dosyasi icerisinde ne kadar jar dosyasi varsa /app.jar dosyasinin icine at. 
-      EXPOSE ${EXPOSED_PORT} #hangi portu kullanacagimizi degisken olarak atadik
-      ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"] #bu komutla container acildiginda hangi komutun calisacagini gosteriyoruz. CMD ile ENTRYPOINT arasindaki fark ise: cmd arguman alir yani calistirirken degistirebilirsin ama ENTRYPOINT de degistiremezsin. ENTRYPOINT de illaki koydugumuz komut calisacak demektir. Jar halien getirilms bir dosyayi calistirmak icin java -jar /app.jar komutu ile calistiriyoruz. "-Djava.security.egd=file:/dev/./urandom" bu komut java virtual machine in durmasini engelleyen ara katman.
-      
+```Dockerfile
+FROM openjdk:11-jre #neden java jdk degil de open jdk image cunku boyutu kucuk requirements larimi karsiliyor, bende maven oldugu icin javanin compilelarina ihtiyacim yok o da olunca imagein boyutu buyuyor. Biri 400 digeri 100 mb
+ARG DOCKERIZE_VERSION=v0.6.1 #image olustururken build ederken kolaylik saglamak acisindan bir degisken atamak icin ARG komutunun kullandim. Version lar yenilenirken her seferinde ugrasmak istemedim
+ARG EXPOSED_PORT=9090 #expose portunun degisme ihtimalina karsi bunu da arg icine koydum
+ENV SPRING_PROFILES_ACTIVE docker #container olusurken icine env degiskeni eklemek icin yazdim. Developerlarin soyledigi env i koydum. Bunu da nerden bulabilirim. Customer service klasorunde bootstrap.yaml dosyasinin icinde port bilgisinde localhost dan degil de dockerdan alacagimiz bilgisi var. Bu da config serverda zaten bildirilmis ben de ona gore bu degiskeni atamam gerekiyor.
+ADD https://github.com/jwilder/dockerize/releases/download/${DOCKERIZE_VERSION}/dockerize-alpine-linux-amd64-${DOCKERIZE_VERSION}.tar.gz dockerize.tar.gz #github dan alpine linux dosyasini cekiyorum
+RUN tar -xzf dockerize.tar.gz #tar klasorunu aciyor
+RUN chmod +x dockerize #executable yetkisi verdim
+ADD ./target/*.jar /app.jar #Mvn clean test yaptiktan sonra her bir micro serviste target klasoru olusacak ve onun icinde de .jar dosyalari olusacak. ./target dosyasi icerisinde ne kadar jar dosyasi varsa /app.jar dosyasinin icine at. 
+EXPOSE ${EXPOSED_PORT} #hangi portu kullanacagimizi degisken olarak atadik
+ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"] #bu komutla container acildiginda hangi komutun calisacagini gosteriyoruz. CMD ile ENTRYPOINT arasindaki fark ise: cmd arguman alir yani calistirirken degistirebilirsin ama ENTRYPOINT de degistiremezsin. ENTRYPOINT de illaki koydugumuz komut calisacak demektir. Jar halien getirilms bir dosyayi calistirmak icin java -jar /app.jar komutu ile calistiriyoruz. "-Djava.security.egd=file:/dev/./urandom" bu komut java virtual machine in durmasini engelleyen ara katman.
+```
     • Ayni dockerfile la api-gateway icindeki klasorde bir docker file olusturdum ve icerigin aynisini yapistirdim. Yalnizca port una baktim ve 8080 olarak degistirdim.
-      
-      FROM openjdk:11-jre
-      ARG DOCKERIZE_VERSION=v0.6.1
-      ARG EXPOSED_PORT=8080
-      ENV SPRING_PROFILES_ACTIVE docker
-      ADD https://github.com/jwilder/dockerize/releases/download/${DOCKERIZE_VERSION}/dockerize-alpine-linux-amd64-${DOCKERIZE_VERSION}.tar.gz dockerize.tar.gz
-      RUN tar -xzf dockerize.tar.gz
-      RUN chmod +x dockerize
-      ADD ./target/*.jar /app.jar
-      EXPOSE ${EXPOSED_PORT}
-      ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
-      
+```Dockerfile      
+FROM openjdk:11-jre
+ARG DOCKERIZE_VERSION=v0.6.1
+ARG EXPOSED_PORT=8080
+ENV SPRING_PROFILES_ACTIVE docker
+ADD https://github.com/jwilder/dockerize/releases/download/${DOCKERIZE_VERSION}/dockerize-alpine-linux-amd64-${DOCKERIZE_VERSION}.tar.gz dockerize.tar.gz
+RUN tar -xzf dockerize.tar.gz
+RUN chmod +x dockerize
+ADD ./target/*.jar /app.jar
+EXPOSE ${EXPOSED_PORT}
+ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
+```      
     • Ayni dockerfile la config-server icindeki klasorde bir docker file olusturdum ve icerigin aynisini yapistirdim. Yalnizca port una baktim ve 8888 olarak degistirdim.
     • Ayni dockerfile la customer-service icindeki klasorde bir docker file olusturdum ve icerigin aynisini yapistirdim. Yalnizca port una baktim ve 8081 olarak degistirdim.
     • Ayni dockerfile la discovery-server icindeki klasorde bir docker file olusturdum ve icerigin aynisini yapistirdim. Yalnizca port una baktim ve 8761 olarak degistirdim.
@@ -358,15 +384,15 @@ Prepare Dockerfiles for each microservices.
     • Ayni dockerfile la vets-service icindeki klasorde bir docker file olusturdum ve icerigin aynisini yapistirdim. Yalnizca port una baktim ve 8083 olarak degistirdim.
     • Ayni dockerfile la visit-service icindeki klasorde bir docker file olusturdum ve icerigin aynisini yapistirdim. Yalnizca port una baktim ve 8082 olarak degistirdim.
     • Degisiklikleri commit ettim ve push ettim.
-      
-      git add .
-      git commit -m 'added Dockerfiles for microservices'
-      git push --set-upstream origin feature/msp-6
-      git checkout dev
-      git merge feature/msp-6
-      git push origin dev
-      
-      7. MSP 7 - Prepare Script for Building Docker Images
+```bash
+git add .
+git commit -m 'added Dockerfiles for microservices'
+git push --set-upstream origin feature/msp-6
+git checkout dev
+git merge feature/msp-6
+git push origin dev
+```
+# 7. MSP 7 - Prepare Script for Building Docker Images
 
 Local Development Environment
 Prepare Script for Building Docker Images
@@ -376,44 +402,44 @@ feature/msp-7
 
 Dockerfile lardan image olusturacagim bunun icin bir script yazacagim.
     • yeni feature yarattim
-      
-      git checkout dev
-      git branch feature/msp-7
-      git checkout feature/msp-7
-      
+```bash
+git checkout dev
+git branch feature/msp-7
+git checkout feature/msp-7
+```
     • petclinic-microservices folder inin altinda build-dev-docker-images.sh scrip tini yazdim.
-      
-      ./mvnw clean package # tekrardan clean ve build yapmak icin bu komutu yazdim. Herhangi bir sey belki degismistir. Clean yaptim ve yeniden package ladim.
-      docker build --force-rm -t "petclinic-admin-server:dev" ./spring-petclinic-admin-server # --force-rm komutu build olustururken herhangi bir katmanda sorun olursa ya da basari ile build ederse tum katmanlari sil demek (boylece hafizadan tasarruf ediyorum). dev ile tagledim. Dev branch i bunu localde deneyecegi icin boyle tagledim. ./spring-petclinic-admin-server komutunu da dockerfile nerede ise orayi gosteren bir yol veriyorum. 
-      docker build --force-rm -t "petclinic-api-gateway:dev" ./spring-petclinic-api-gateway
-      docker build --force-rm -t "petclinic-config-server:dev" ./spring-petclinic-config-server
-      docker build --force-rm -t "petclinic-customers-service:dev" ./spring-petclinic-customers-service
-      docker build --force-rm -t "petclinic-discovery-server:dev" ./spring-petclinic-discovery-server
-      docker build --force-rm -t "petclinic-hystrix-dashboard:dev" ./spring-petclinic-hystrix-dashboard
-      docker build --force-rm -t "petclinic-vets-service:dev" ./spring-petclinic-vets-service
-      docker build --force-rm -t "petclinic-visits-service:dev" ./spring-petclinic-visits-service
-      docker build --force-rm -t "petclinic-grafana-server:dev" ./docker/grafana
-      docker build --force-rm -t "petclinic-prometheus-server:dev" ./docker/prometheus
-      
+```bash
+./mvnw clean package # tekrardan clean ve build yapmak icin bu komutu yazdim. Herhangi bir sey belki degismistir. Clean yaptim ve yeniden package ladim.
+docker build --force-rm -t "petclinic-admin-server:dev" ./spring-petclinic-admin-server # --force-rm komutu build olustururken herhangi bir katmanda sorun olursa ya da basari ile build ederse tum katmanlari sil demek (boylece hafizadan tasarruf ediyorum). dev ile tagledim. Dev branch i bunu localde deneyecegi icin boyle tagledim. ./spring-petclinic-admin-server komutunu da dockerfile nerede ise orayi gosteren bir yol veriyorum. 
+docker build --force-rm -t "petclinic-api-gateway:dev" ./spring-petclinic-api-gateway
+docker build --force-rm -t "petclinic-config-server:dev" ./spring-petclinic-config-server
+docker build --force-rm -t "petclinic-customers-service:dev" ./spring-petclinic-customers-service
+docker build --force-rm -t "petclinic-discovery-server:dev" ./spring-petclinic-discovery-server
+docker build --force-rm -t "petclinic-hystrix-dashboard:dev" ./spring-petclinic-hystrix-dashboard
+docker build --force-rm -t "petclinic-vets-service:dev" ./spring-petclinic-vets-service
+docker build --force-rm -t "petclinic-visits-service:dev" ./spring-petclinic-visits-service
+docker build --force-rm -t "petclinic-grafana-server:dev" ./docker/grafana
+docker build --force-rm -t "petclinic-prometheus-server:dev" ./docker/prometheus
+```      
     • scriptime executable yetkisi verdim.
-      
-      chmod +x build-dev-docker-images.sh
-      
+```bash
+chmod +x build-dev-docker-images.sh
+```
     • Scriptimi kontrol etmek icin scripti calistirdim. image lari build ettim. 
-      
-      ./build-dev-docker-images.sh
-      
+```bash
+./build-dev-docker-images.sh
+```
     • Commit ve push ettim.
-      
-      git add .
-      git commit -m 'added script for building docker images'
-      git push --set-upstream origin feature/msp-7
-      git checkout dev
-      git merge feature/msp-7
-      git push origin dev
-      
-      8. MSP 8 - Create Docker Compose File for Local Development
-      Programin kendisinde bir docker-compose file var ama ben onu kullanmayacagim. Imagelarin localde calismasi icin local imagelari kullanacagim. Benim tagledigim sekilde kullanacagim. Projede mevcut olan compose filedan cok az farkliliklar var. Bu sadece developerlarin kullanmasi icin olusturacagim bir docker-compose. Tek bir instance icin olusturacagim docker-compose file olusturdum. Docker-swarm icin kullanacagim docker-compose degil.
+```bash
+git add .
+git commit -m 'added script for building docker images'
+git push --set-upstream origin feature/msp-7
+git checkout dev
+git merge feature/msp-7
+git push origin dev
+```
+# 8. MSP 8 - Create Docker Compose File for Local Development
+Programin kendisinde bir docker-compose file var ama ben onu kullanmayacagim. Imagelarin localde calismasi icin local imagelari kullanacagim. Benim tagledigim sekilde kullanacagim. Projede mevcut olan compose filedan cok az farkliliklar var. Bu sadece developerlarin kullanmasi icin olusturacagim bir docker-compose. Tek bir instance icin olusturacagim docker-compose file olusturdum. Docker-swarm icin kullanacagim docker-compose degil.
 Local Development Build
 Create Docker Compose File for Local Development
 MSP-8-1
@@ -421,13 +447,13 @@ Prepare docker compose file to deploy the application locally.
 feature/msp-8
       
     • yeni feature yarattim.
-      
-      git checkout dev
-      git branch feature/msp-8
-      git checkout feature/msp-8
-      
+```bash
+git checkout dev
+git branch feature/msp-8
+git checkout feature/msp-8
+```
     • petclinic-microservices klasorunun icine docker-compose-local.yml adli bir file yarattim.
-
+```yaml
 Version: '2' #neden version 3 degilde 2: mem_limit kavrami version 3 de yok ama buna benim ihtiyacim var. mem_limit diyor ki bu image a verilen mb limiti. Boylelikle limit asimi oldugunda yalnizca o microservice cokecek tum app cokmeyecek. Version 3 de resources kaynagini koyup limiti eklemisler.
 
 #Once config server calismasi lazim ki herkes configurasyon bilgilerini alsin. sonra service discovery calismasi lazim ki tum servisler bu servise “ben hazirim calisiyorum” diyebilsin. Bu ikisi calistiktan sonra program calismasi lazim.
@@ -540,6 +566,7 @@ services:
     mem_limit: 256M
     ports:
     - 9091:9090 #prometheus un defaultu 9090 ama admin service in portu 9090 oldugu icin bunu 9091 den export etmeyi tercih ettim ayni olmasin diye
+```
 
 Local Development Build
 Create Docker Compose File for Local Development
@@ -547,26 +574,27 @@ MSP-8-2
 Prepare a script to test the deployment of the app locally.
 feature/msp-8
     • docker-compose-local.yml adindaki dosyayi calistirmak icin test-local-deployment.sh scripti yaziyorum.
-      
+      ```bash
       docker-compose -f docker-compose-local.yml up #normalde docker compose up komutu ile calistirilir ama docker-compose file calismasin diye docker-compose-local.yml dosyasini calistirmak icin basina f koydum .
+      ```
     • execute yetkisini veriyorum
-      
+      ```bash
       chmod +x test-local-deployment.sh
-      
+      ```
     • docker compose file ini calistiriyorum
-      
+      ```bash
       ./test-local-deployment.sh
-      
+      ```
     • Commit ve push ettim.
-      
+```bash      
 git add .
 git commit -m 'added docker-compose file and script for local deployment'
 git push --set-upstream origin feature/msp-8
 git checkout dev
 git merge feature/msp-8
 git push origin dev
-
-      9. MSP 9 - Setup Unit Tests and Configure Code Coverage Report
+```
+# 9. MSP 9 - Setup Unit Tests and Configure Code Coverage Report
     • Bu asamada Unit test ve functional testleri implement ettim.
 Testing Environment Setup
 Implement Unit Tests
@@ -574,16 +602,16 @@ MSP-9-1
 Implement 3 Unit Tests locally.
 feature/msp-9
     • feature olusturdum.
-      
+```bash   
 git checkout dev
 git branch feature/msp-9
 git checkout feature/msp-9
-
+```
     • Unit test nedir: Birim test demek. Genelde kaynak kodu icerisindeki Fonksiyonlar unit test olarak belirlenir. En kucuk ve ilk test asamasi. Ilk olarak proje unit testi gectikten sonra build edilir.
     • Ornegin python sum fonksiyonu 5+6=11. Benim yazdigim fonksiyonun sum sonucu ile ayni olmasini bekleriz bununla ilgili bir test yazarim. Unit test developer sorumlulugunda. Source kod ile birlikte verir.
     • Customer-service icinde ./spring-petclinic-customers-service/src/test/java/org/springframework/samples/petclinic/customers/model/ icinde Pet.java isimli test dosyasi olusturdum. Icine de developer dan aldigim test code larini yazdim.
       
-
+```json
 package org.springframework.samples.petclinic.customers.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -623,21 +651,21 @@ public class PetTest {
         assertEquals(bd,pet.getBirthDate());
     }
 }
-
+```
     • Commit ettim.
-      
+```bash   
 git add .
 git commit -m 'added 3 UTs for customer-service'
 git push --set-upstream origin feature/msp-9
-
+```
     • Customer-service icinde
-       
-      . ../mvnw clean test
-      
+```bash 
+. ../mvnw clean test
+```
     • yukaridaki komut sorun verdi bu kodu girdim
-      
-      source ../mvnw clean test
-      
+```bash
+source ../mvnw clean test
+```
     • Jacoco bir code cocerage tool. Kodumun yuzde kacinin test edildigini gosteriyor.
 Testing Environment Setup
 Setup Code Coverage Tool
@@ -645,7 +673,8 @@ MSP-9-2
 Update POM file for Code Coverage Report.
 feature/msp-9
 
-    • Kok klasordeki pom.xml dosyasinin 130 unda satirindan itibaren yani pluginslerden sonrasina bu kismi yapistiriyorum. 
+    • Kok klasordeki pom.xml dosyasinin 130 unda satirindan itibaren yani pluginslerden sonrasina bu kismi yapistiriyorum.
+```js 
 <plugin>
     <groupId>org.jacoco</groupId>
     <artifactId>jacoco-maven-plugin</artifactId>
@@ -666,13 +695,13 @@ feature/msp-9
         </execution>
     </executions>
 </plugin>
-
+```
     • Commit ve push ettim.
-      
+```bash      
 git add .
 git commit -m 'added 3 UTs for customer-service'
 git push --set-upstream origin feature/msp-9
-
+```
 
 Testing Environment Setup
 Implement Code Coverage
@@ -680,15 +709,15 @@ MSP-9-3
 Generate Code Coverage Report manually.
 feature/msp-9
     • Customer service klasorune girdim sadece jacoco plugin in calisip calismadigini kontrol etmek icin bu klasorun icinde asagidaki kodu calistirdim. Tum service ler icin yapmadim. Sadece jacoco nun calisip calismadigini kontrol ettim. Hepsini test etmeme gerek yok.
-      
-      . ../mvnw test
-      
+```bash
+. ../mvnw test
+```
     • target/site/jacoco klasorunun icine girdim. Buradaki html sayfasini calistirmak icin asagidaki kodu giriyorum ve html sayfasinda aciyorum. Jacoco raporu burada gorulebiliyor.
-      
-      python -m SimpleHTTPServer # for python 2.7
-      python3 -m http.server # for python 3+
-      
-      10. MSP 10 - Prepare and Implement Selenium Tests
+```bash
+python -m SimpleHTTPServer # for python 2.7
+python3 -m http.server # for python 3+
+```
+# 10. MSP 10 - Prepare and Implement Selenium Tests
       
 Testing Environment Setup
 Prepare Selenium Tests
@@ -703,7 +732,7 @@ feature/msp-10
       git checkout feature/msp-10
 
     • selenium-jobs adinda klasor olusturdum. test_owners_all_headless.py adinda bir dosya olusturdum. Test dosyasini icine kopyaladim.
-
+```js
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -833,7 +862,7 @@ verify_table = WebDriverWait(driver, 10).until(EC.presence_of_element_located((B
 print("Table loaded")
 
 driver.quit()
-
+```
     • commit ve push ettim.
 
 git add .
@@ -850,7 +879,7 @@ MSP-10-2
 Run 3 Selenium Tests against local environment.
 feature/msp-10
 
-11. MSP 11 - Prepare Jenkins Server for CI/CD Pipeline
+# 11. MSP 11 - Prepare Jenkins Server for CI/CD Pipeline
     • Jenkins serverimi olusturdum.
 
 CI Server Setup
@@ -865,7 +894,7 @@ Prepare Jenkins Server for CI/CD Pipeline.
       git checkout feature/msp-11
       
     • Infrastructure folder inin icinde jenkins-server-cfn-template.yml adinda Jenkins server icin cloud formation olusturdum. 
-
+```yaml
 AWSTemplateFormatVersion: 2010-09-09
 
 Description: >
@@ -988,20 +1017,20 @@ Outputs:
     Value: !Sub 
       - http://${PublicAddress}:8080
       - PublicAddress: !GetAtt JenkinsServer.PublicDnsName
-
+```
     • CloudFormation u AWS ye yukledim. Stack imi create ettim.
     • SHH ile VSCode dan jenkise baglandim.
     • Arik bu instance dan devam edecegim icin git clone ile repomu buraya clone ladim.
     • Commit ledim ve push ettim.
-      
+      ```bash
       git add .
       git commit -m 'added jenkins server cfn template'
       git push --set-upstream origin feature/msp-11
       git checkout dev
       git merge feature/msp-11
       git push origin dev
-      
-      12. MSP 12 - Configure Jenkins Server for Project
+      ```
+# 12. MSP 12 - Configure Jenkins Server for Project
       
 CI Server Setup
 Configure Jenkins Server for Project
@@ -1009,9 +1038,9 @@ MSP-12
 Configure Jenkins Server for Project Setup.
     • Jenkins Server imi configure ediyorum.
     • Jenkinsimin admin sifresini aliyorum.
-      
-      sudo cat /var/lib/jenkins/secrets/initialAdminPassword
-      
+```bash
+sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+```
     • Public IPnin devamini 8080 i yaziyorum ve http baglantisi ile jenkinsi aciyorum.
     • Sifremi girdim.
     • Tavsiye edilenPluginleri yukledim.
@@ -1038,19 +1067,19 @@ Prepare CI pipeline (UT only) for all dev , feature and bugfix branches.
       mkdir jenkins
       
     • Jenkins dashboarda geldim. new item>freestyle project adini petclinic-ci-job verdim. Source Code Management>Git>Githubdan project url yapistirdim. Branch to build>*/dev, */feature**, */bugfix** branch larini girdim. GitHub hook trigger for GITScm polling isaretledim. Add build step>execute shell kismina alttaki komutu girdim.
-      
-      echo 'Running Unit Tests on Petclinic Application'
-      docker run --rm -v $HOME/.m2:/root/.m2 -v `pwd`:/app -w /app maven:3.6-openjdk-11 mvn clean test #maven 3.6 image ini calistir. Pwd deki yani jenkins in filelarin oldugu klasoru container icinde /app adli bir klasor olustur onun icine at. $HOME/.m2:/root/.m2 komutu ise: .m2 maven in local reposu demek. Jenkins in local reposuna indirdigi seyleri de jenkins in HOME undan container in /root/.m2 klasoru icine at ki bir daha her zaman bu containerdan kolay bir sekilde calistirabileyim. -v komutu volume olusturmak icin. -w ise calisma yerimizi gosteriyor. Workspce yani.
-      
+```bash
+echo 'Running Unit Tests on Petclinic Application'
+docker run --rm -v $HOME/.m2:/root/.m2 -v `pwd`:/app -w /app maven:3.6-openjdk-11 mvn clean test #maven 3.6 image ini calistir. Pwd deki yani jenkins in filelarin oldugu klasoru container icinde /app adli bir klasor olustur onun icine at. $HOME/.m2:/root/.m2 komutu ise: .m2 maven in local reposu demek. Jenkins in local reposuna indirdigi seyleri de jenkins in HOME undan container in /root/.m2 klasoru icine at ki bir daha her zaman bu containerdan kolay bir sekilde calistirabileyim. -v komutu volume olusturmak icin. -w ise calisma yerimizi gosteriyor. Workspce yani.
+```
     • Post build actions>Add post-build action>Record jacoco coverage report ekledim. SAVE.
     • Build ettim. Outputu kontrol ettim.
     • Code Coverage I kontrol ettim. Jacoco plugin ile gorebiliyorum.
     • Webhook ayarlarini yapmak icin github a girdim. Settings>Webhooks>Add webhooks>Payload URL kismindaki public ip yi degistirdim.(http://[jenkins-server-hostname]:8080/github-webhook/) Add webhook tikladim.
     • Jenkins klasoru icine jenkins-petclinic-ci-job.sh olusturdum. Alttaki Scripti yazdim.
-      
-      echo 'Running Unit Tests on Petclinic Application'
-      docker run --rm -v $HOME/.m2:/root/.m2 -v `pwd`:/app -w /app maven:3.6-openjdk-11 mvn clean test
-      
+```bash
+echo 'Running Unit Tests on Petclinic Application'
+docker run --rm -v $HOME/.m2:/root/.m2 -v `pwd`:/app -w /app maven:3.6-openjdk-11 mvn clean test
+```
     • commit ve push ettim.
       
       git add .
@@ -1070,17 +1099,17 @@ MSP-14
 Create Docker Registry on AWS ECR manually using Jenkins job.
     • Jenkins ile manuel olarak ECR yarattim. Amazonda calistigim icin image lari ecr da tutacagim dockerhub da degil.(EC2 yu kapatip acti isem webhook u guncellemem gerekir)
     • Jenkins dashboard a geldim. Newitem>freestyle project>create-ecr-docker-registry-for-dev adini yazdim OK bastim. Build step>execute shell kismina alttaki command I giriyorum.
-      
-      PATH="$PATH:/usr/local/bin"
-      APP_REPO_NAME="sezgin-repo/petclinic-app-dev" #repo ismini degistirebilirsin
-      AWS_REGION="us-east-1"
-      
-      aws ecr create-repository \
-        --repository-name ${APP_REPO_NAME} \ #isim veriyorum
-        --image-scanning-configuration scanOnPush=false \ #hassas durumlara karsi scan etmesini istemiyorum
-        --image-tag-mutability MUTABLE \ #image lerden ayni isimde ikinci image olusturdugumuzda uzerine yazmaya izin vermiyor, hata veriyor.
-        --region ${AWS_REGION} #region giriyorum
-      
+```bash
+PATH="$PATH:/usr/local/bin"
+APP_REPO_NAME="sezgin-repo/petclinic-app-dev" #repo ismini degistirebilirsin
+AWS_REGION="us-east-1"
+
+aws ecr create-repository \
+  --repository-name ${APP_REPO_NAME} \ #isim veriyorum
+  --image-scanning-configuration scanOnPush=false \ #hassas durumlara karsi scan etmesini istemiyorum
+  --image-tag-mutability MUTABLE \ #image lerden ayni isimde ikinci image olusturdugumuzda uzerine yazmaya izin vermiyor, hata veriyor.
+  --region ${AWS_REGION} #region giriyorum
+```
       15. MSP 15 - Prepare Script for Development Docker Registry
       
 Registry Setup for Development
@@ -1096,17 +1125,17 @@ feature/msp-15
       git checkout feature/msp-15
       
     • Infrastructure altinda create-ecr-docker-registry-for-dev.sh adinda bir script yazdim.
-      
-      PATH="$PATH:/usr/local/bin"
-      APP_REPO_NAME="sezgin-repo/petclinic-app-dev"
-      AWS_REGION="us-east-1"
-      
-      aws ecr create-repository \
-        --repository-name ${APP_REPO_NAME} \
-        --image-scanning-configuration scanOnPush=false \
-        --image-tag-mutability MUTABLE \
-        --region ${AWS_REGION}
-      
+```bash
+PATH="$PATH:/usr/local/bin"
+APP_REPO_NAME="sezgin-repo/petclinic-app-dev"
+AWS_REGION="us-east-1"
+
+aws ecr create-repository \
+  --repository-name ${APP_REPO_NAME} \
+  --image-scanning-configuration scanOnPush=false \
+  --image-tag-mutability MUTABLE \
+  --region ${AWS_REGION}
+```
     • Commit ve push.
       
       git add .
@@ -1116,7 +1145,7 @@ feature/msp-15
       git merge feature/msp-15
       git push origin dev
 
-16. MSP 16 - Create a QA Automation Environment with Docker Swarm
+# 16. MSP 16 - Create a QA Automation Environment with Docker Swarm
 
 QA Automation Setup for Development
 Create a QA Automation Environment
@@ -1131,7 +1160,7 @@ feature/msp-16
       git checkout feature/msp-16
       
     • infrastructure klasorunun icinde docker-swarm-infrastructure-cfn-template.yml olusturdumm. Instance larda docker, docker swarm vs yok. Bunlarin hepsini ansible ile olusturdum.
-
+```yaml
 AWSTemplateFormatVersion: 2010-09-09
 
 Description: >
@@ -1313,7 +1342,7 @@ Outputs:
     Value: !Sub 
       - ${PublicAddress}
       - PublicAddress: !GetAtt DockerInstance5.PublicDnsName
-
+```
     • Commit ve push
       
       git add .
@@ -1322,27 +1351,27 @@ Outputs:
       
     • Oncelikle yapacagim automation oncesi command larimin calisip calismadigini test etmek icin teker teker freestyle project olarak manuel bicimde denemesini yapacagim.
     • Jenkins dashboard>new item>freestyle project>test-creating-qa-automation-infrastructure adini verdim OK. Source Code Management>Git>Project URL yapistir. Branches to Build>*/feature/msp-16 yazdim. Add build step>Execute Shell>alttaki command yapistirdim. SAVE.
-      
-      echo $PATH #binarymi, command larimin oldugu klasoru goster
-      whoami #ben kimim(yani bu makine ec2 degil jenkins makinasi user olarak o cikiyor)
-      PATH="$PATH:/usr/local/bin" #aws cli calismasi icin path ekliyorum
-      python3 --version
-      pip3 --version
-      ansible --version
-      aws --version
-      
+```bash
+echo $PATH #binarymi, command larimin oldugu klasoru goster
+whoami #ben kimim(yani bu makine ec2 degil jenkins makinasi user olarak o cikiyor)
+PATH="$PATH:/usr/local/bin" #aws cli calismasi icin path ekliyorum
+python3 --version
+pip3 --version
+ansible --version
+aws --version
+```
     • Build yaptim. Output u kontrol ettim. Evet komutlarim calisiyor. Sorun olmadigini anlamis oldum.
     • Dasboard>test-creating-qa-automation-infrastructure>configure>execute shell deki commad in yerine asagidaki command i yaziyorum.
-      
-      PATH="$PATH:/usr/local/bin" 
-      CFN_KEYPAIR="sezgin-ansible-test-dev.key" #keypair olusturuyorum
-      AWS_REGION="us-east-1" #hangi bolgede olusturacak
-      aws ec2 create-key-pair --region ${AWS_REGION} --key-name ${CFN_KEYPAIR} --query "KeyMaterial" --output text > ${CFN_KEYPAIR} #query komutu keyfile icerisindeki tum yazanlari al ve output text komutu ile benim keypair sezgin-ansible-test-dev.key imin icine koy. Boylece local klasorumde olusuyor.
-      chmod 400 ${CFN_KEYPAIR} #chmod yetkisi verdim.
-      
+```bash
+PATH="$PATH:/usr/local/bin" 
+CFN_KEYPAIR="sezgin-ansible-test-dev.key" #keypair olusturuyorum
+AWS_REGION="us-east-1" #hangi bolgede olusturacak
+aws ec2 create-key-pair --region ${AWS_REGION} --key-name ${CFN_KEYPAIR} --query "KeyMaterial" --output text > ${CFN_KEYPAIR} #query komutu keyfile icerisindeki tum yazanlari al ve output text komutu ile benim keypair sezgin-ansible-test-dev.key imin icine koy. Boylece local klasorumde olusuyor.
+chmod 400 ${CFN_KEYPAIR} #chmod yetkisi verdim.
+```
     • Build ettim. Workspace den kontrol ettim. Pem key olusmus. Amazon Console dan da bakilirsa olustugunu gorebiliyorum.
     • Dasboard>test-creating-qa-automation-infrastructure>configure>execute shell deki commad in yerine asagidaki command i yaziyorum. SAVE.
-      
+```bash      
 PATH="$PATH:/usr/local/bin"
 APP_NAME="Petclinic"
 APP_STACK_NAME="sezgin-$APP_NAME-App-${BUILD_NUMBER}"
@@ -1350,21 +1379,21 @@ CFN_KEYPAIR="sezgin-ansible-test-dev.key"
 CFN_TEMPLATE="./infrastructure/dev-docker-swarm-infrastructure-cfn-template.yml" #template i buradan al dedim
 AWS_REGION="us-east-1"
 aws cloudformation create-stack --region ${AWS_REGION} --stack-name ${APP_STACK_NAME} --capabilities CAPABILITY_IAM --template-body file://${CFN_TEMPLATE} --parameters ParameterKey=KeyPairName,ParameterValue=${CFN_KEYPAIR} #aws cloud formation create-stack=stack olustur command. --region hangi region da olusacagi. --stack-name= adinin ne olacagi. --capabilities=rol tanimlamasini acikca yapmamizi sagliyor(consoledan cf olustururken IAM role tanimlamasi yapmak istiyor musun diye soruyor iste bu command ona denk geliyor). --template-body file=template nereden olusturulacak klasoru yazdim. --parameters=parameters degerine de olusturdugum CFN_KEYPAIR i koydum.
-
+```
     • Build. AWS Cloud formation a gelip baktigimda stack numarasinin otomatik atandigi gorulebiliyor. AWS Dashboard a geldigimde 5 tane ec2 nun olustugunu gorebiliyorum.
     • Jenkins e SSH ile  baglanabiliyor muyum onu kontrol etmek istiyorum. Dasboard>test-creating-qa-automation-infrastructure>configure>execute shell deki commad in yerine asagidaki command I yaziyorum. SAVE.
-      
-      CFN_KEYPAIR="sezgin-ansible-test-dev.key"
-      ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i ${WORKSPACE}/${CFN_KEYPAIR} ec2-user@172.31.91.243 hostname #ip degistir.  her seferinde degistirmemek icin Private IP yaptim. -o strictHostKeyChecking=no commandi giriste bize yes mi sorusu sormamasi icin kullandim. -o UserKnownHostsFile=/dev/null command i normalde .ssh klasorunu icinde baglanilan instance lari known_host file inin altina kaydediyor, bazen bunu kaydedeyim diye yes mi no mu diye soruyor. Bu command ile bunu bosa at bana sorma demek istedim. Bir nevi topraklama.
-      
+```bash
+CFN_KEYPAIR="sezgin-ansible-test-dev.key"
+ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i ${WORKSPACE}/${CFN_KEYPAIR} ec2-user@172.31.91.243 hostname #ip degistir.  her seferinde degistirmemek icin Private IP yaptim. -o strictHostKeyChecking=no commandi giriste bize yes mi sorusu sormamasi icin kullandim. -o UserKnownHostsFile=/dev/null command i normalde .ssh klasorunu icinde baglanilan instance lari known_host file inin altina kaydediyor, bazen bunu kaydedeyim diye yes mi no mu diye soruyor. Bu command ile bunu bosa at bana sorma demek istedim. Bir nevi topraklama.
+```
     • Ansible icin statik bir inventory olusturmak icin: ansible/inventory adli bir klasor olusturdum. Altina hosts.ini adinda bir file olusturdum. Docker machinelerin private ip lerini koydum. 
-
+```txt
 172.31.91.243   ansible_user=ec2-user  
 172.31.87.143   ansible_user=ec2-user
 172.31.90.30    ansible_user=ec2-user
 172.31.92.190   ansible_user=ec2-user
 172.31.88.8     ansible_user=ec2-user
-
+```
     • Commit ve push ettim.
       
       git add .
@@ -1372,28 +1401,19 @@ aws cloudformation create-stack --region ${AWS_REGION} --stack-name ${APP_STACK_
       git push
       
     • Dasboard>test-creating-qa-automation-infrastructure>configure>execute shell deki commad in yerine asagidaki command i yaziyorum. SAVE.
-      
+```bash
 PATH="$PATH:/usr/local/bin"
 CFN_KEYPAIR="sezgin-ansible-test-dev.key"
 export ANSIBLE_INVENTORY="${WORKSPACE}/ansible/inventory/hosts.ini" #export command i ile ANSIBLE_INVENTORY nun icine ${WORKSPACE}/ansible/inventory/hosts.ini dosyasini koy
 export ANSIBLE_PRIVATE_KEY_FILE="${WORKSPACE}/${CFN_KEYPAIR}" #keyfile i alip  ANSIBLE_PRIVATE_KEY_FILE atamasini yaptim.
 export ANSIBLE_HOST_KEY_CHECKING=False #host key her seferinde sormamasi icin
 ansible all -m ping #ping atiyorum ki calisiyor mu diye
-
+```
     • ansible inventory nin baktigi dosya sirasi yanda, ben yukaridaki command ile ona hosts.inin yerini gosterdim.
     • Build ettim. Sorunsuz calistigi icin ansible a sorunsuz baglandi.
-
-
-
-
-
-
-
-
-
-
     • Ansible da dinamik inventory olusturmak icin ansible/inventory dosyasinin icine dev_stack_dynamic_inventory_aws_ec2.yaml dosyasi olusturdum. 
 
+```yaml
 plugin: aws_ec2
 regions:
   - "us-east-1"
@@ -1416,9 +1436,10 @@ hostnames:
   - "private-ip-address"
 compose:
   ansible_user: "'ec2-user'"
-
+```
     • Ansible da dinamik inventory olusturmak icin ansible/inventory dosyasinin icine dev_stack_swarm_grand_master_aws_ec2.yaml dosyasi olusturdum. 
 
+```yaml
 plugin: aws_ec2
 regions:
   - "us-east-1"
@@ -1430,9 +1451,9 @@ hostnames:
   - "private-ip-address"
 compose:
   ansible_user: "'ec2-user'"
-
+```
     • Ansible da dinamik inventory olusturmak icin ansible/inventory dosyasinin icine dev_stack_swarm_managers_aws_ec2.yaml dosyasi olusturdum. 
-
+```yaml
 plugin: aws_ec2
 regions:
   - "us-east-1"
@@ -1444,9 +1465,9 @@ hostnames:
   - "private-ip-address"
 compose:
   ansible_user: "'ec2-user'"
-
+```
     • Ansible da dinamik inventory olusturmak icin ansible/inventory dosyasinin icine dev_stack_swarm_workers_aws_ec2.yaml dosyasi olusturdum. 
-
+```yaml
 plugin: aws_ec2
 regions:
   - "us-east-1"
@@ -1458,7 +1479,7 @@ hostnames:
   - "private-ip-address"
 compose:
   ansible_user: "'ec2-user'"
-
+```
     • Commit ve push.
 
 git add .
@@ -1466,7 +1487,7 @@ git commit -m 'added ansible dynamic inventory files for dev environment'
 git push
 
     • Jenkins>Dashboard>test-creating-qa-automation-infrastructure>configure>command i degistir.
-
+```bash
 APP_NAME="Petclinic"
 CFN_KEYPAIR="sezgin-ansible-test-dev.key"
 PATH="$PATH:/usr/local/bin"
@@ -1489,10 +1510,10 @@ ansible-inventory -v -i ./ansible/inventory/dev_stack_swarm_managers_aws_ec2.yam
 sed -i "s/APP_STACK_NAME/$APP_STACK_NAME/" ./ansible/inventory/dev_stack_swarm_workers_aws_ec2.yaml
 cat ./ansible/inventory/dev_stack_swarm_workers_aws_ec2.yaml
 ansible-inventory -v -i ./ansible/inventory/dev_stack_swarm_workers_aws_ec2.yaml –graph
-
+```
     • Build ettim.
     • Ping atarak kontrol ediyorum. Jenkins>Dashboard>test-creating-qa-automation-infrastructure>configure>command i degistir.
-
+```bash
 # Test dev dynamic inventory by pinging
 APP_NAME="Petclinic"
 CFN_KEYPAIR="sezgin-ansible-test-dev.key"
@@ -1502,10 +1523,10 @@ export ANSIBLE_HOST_KEY_CHECKING=False
 export APP_STACK_NAME="Sezgin-$APP_NAME-App-${BUILD_NUMBER}" #build numberi degistirmem gerekir. Sabit olarak stack numarasina bakip onu yazmam gerek
 sed -i "s/APP_STACK_NAME/$APP_STACK_NAME/" ./ansible/inventory/dev_stack_dynamic_inventory_aws_ec2.yaml
 ansible -i ./ansible/inventory/dev_stack_dynamic_inventory_aws_ec2.yaml all -m ping
-
+```
     • Build ettim. Dynamic inventory olustu.
     • ansible/playbooks folder olusturdum. pb_setup_for_all_docker_swarm_instances.yaml isimli yaml dosyasini koydum. Icerigi asagida (cf deki user data da yapmis oldugum islemleri yapiyorum)
-
+```yaml
 ---
 - hosts: all #tum instance lara ayni islemi yap
   tasks:
@@ -1543,8 +1564,9 @@ ansible -i ./ansible/inventory/dev_stack_dynamic_inventory_aws_ec2.yaml all -m p
     args:
       cmd: "/tmp/aws/install" #chmod yap
       creates: /usr/local/bin/aws #calistir
-
+```
     • ansible/playbooks folder olusturdum. pb_initialize_docker_swarm.yaml isimli yaml dosyasini koydum. Icerigi asagida
+```yaml
 ---
 - hosts: role_grand_master #docker swami initialize ettim
   tasks:
@@ -1562,8 +1584,9 @@ ansible -i ./ansible/inventory/dev_stack_dynamic_inventory_aws_ec2.yaml all -m p
         --constraint=node.role==manager \
         --mount=type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock \
         dockersamples/visualizer
-
+```
     • ansible/playbooks folder olusturdum. pb_join_docker_swarm_managers.yaml isimli yaml dosyasini koydum. Icerigi asagida
+```yaml
 ---
 - hosts: role_grand_master #manager ekledim
   tasks:
@@ -1585,9 +1608,9 @@ ansible -i ./ansible/inventory/dev_stack_dynamic_inventory_aws_ec2.yaml all -m p
     register: result_of_joining
 
 - debug: msg='{{ result_of_joining.stdout }}' #bu komutla da son calistirdigim komutu gormek icin yaziyorum. Son komutu gosteriyor. Bir nevi console log ciktisi veriyor.
-
+```
     • ansible/playbooks folder altina. pb_join_docker_swarm_managers.yaml isimli yaml dosyasini koydum. Icerigi asagida
-
+```yaml
 ---
 - hosts: role_grand_master #grand master daki ayni islemi burada yapiyorum sadece tek farki worker olmasi
   tasks:
@@ -1609,7 +1632,7 @@ ansible -i ./ansible/inventory/dev_stack_dynamic_inventory_aws_ec2.yaml all -m p
     register: result_of_joining
 
   - debug: msg='{{ result_of_joining.stdout }}'
-
+```
     • commit ve push.
       
       git add .
@@ -1617,7 +1640,7 @@ ansible -i ./ansible/inventory/dev_stack_dynamic_inventory_aws_ec2.yaml all -m p
       git push
       
     • Jenkins>Dashboard>test-creating-qa-automation-infrastructure>configure>command I degistir.
-
+```bash
 APP_NAME="Petclinic"
 CFN_KEYPAIR="sezgin-ansible-test-dev.key"
 PATH="$PATH:/usr/local/bin"
@@ -1633,18 +1656,18 @@ ansible-playbook -i ./ansible/inventory/dev_stack_dynamic_inventory_aws_ec2.yaml
 ansible-playbook -i ./ansible/inventory/dev_stack_dynamic_inventory_aws_ec2.yaml -b ./ansible/playbooks/pb_join_docker_swarm_managers.yaml
 # Swarm Setup for Workers nodes
 ansible-playbook -i ./ansible/inventory/dev_stack_dynamic_inventory_aws_ec2.yaml -b ./ansible/playbooks/pb_join_docker_swarm_workers.yaml
-
+```
     • Build ettim.
     • Olusturdugum Cloud Formationu siliyorum. 5 tane instance sildim. Jenkins>Dashboard>test-creating-qa-automation-infrastructure>configure>command i degistir.
-
+```bash
 PATH="$PATH:/usr/local/bin"
 APP_NAME="Petclinic"
 AWS_STACK_NAME="sezgin-$APP_NAME-App-${BUILD_NUMBER}" #Build number degistir
 AWS_REGION="us-east-1"
 aws cloudformation delete-stack --region ${AWS_REGION} --stack-name ${AWS_STACK_NAME}
-
+```
     • Infrastructure klasoru icinde create-qa-automation-environment.sh adinda bir file olusturdum.
-
+```bash
 PATH="$PATH:/usr/local/bin"
 APP_NAME="Petclinic"
 CFN_KEYPAIR="sezgin-$APP_NAME-dev-${BUILD_NUMBER}.key"
@@ -1678,7 +1701,7 @@ aws cloudformation delete-stack --region ${AWS_REGION} --stack-name ${AWS_STACK_
 # Delete key pair
 aws ec2 delete-key-pair --region ${AWS_REGION} --key-name ${CFN_KEYPAIR}
 rm -rf ${CFN_KEYPAIR}
-
+```
     • Commit ve push.
       
 git add .
@@ -1688,7 +1711,7 @@ git checkout dev
 git merge feature/msp-16
 git push origin dev
 
-17. MSP 17 - Prepare a QA Automation Pipeline for Nightly Builds
+# 17. MSP 17 - Prepare a QA Automation Pipeline for Nightly Builds
 
 QA Automation Setup for Development
 Prepare a QA Automation Pipeline
@@ -1706,13 +1729,13 @@ feature/msp-17
       git checkout feature/msp-17
 
     • Jenkins folder in altinda docker ile maven la build etmek icin package-with-maven-container.sh scriptini olusturuyoruz.
-      
-      docker run --rm -v $HOME/.m2:/root/.m2 -v $WORKSPACE:/app -w /app maven:3.6-openjdk-11 mvn clean package #dockerla maveni olan bir klasor olusturuyoruz.
-      
+```bash
+docker run --rm -v $HOME/.m2:/root/.m2 -v $WORKSPACE:/app -w /app maven:3.6-openjdk-11 mvn clean package #dockerla maveni olan bir klasor olusturuyoruz.
+```
     • Her nightly build version olarak saklanir. Biz de docker image olarak saklayacagiz. Onceki pipeline imizda build lerimizde sabit bir image ismi belirlemistim ama burada imagelarimi taglemeliyim ve bu tagler her buildle birlikte farklilasmali. Bunu da otomatize hale getirmek istiyorum. ECR reposunun icine imagelar build nosu ile birlikte taglensin istiyorum. Bunun icin bir script olusturdum.
       
     • Jenkins folder klasoru altinda prepare-tags-ecr-for-dev-docker-images.sh scriptini yazdim.
-
+```bash
 MVN_VERSION=$(. ${WORKSPACE}/spring-petclinic-admin-server/target/maven-archiver/pom.properties && echo $version) #proje build edildikten sonra maven workspaceindeki klasorden buildin version numarasini aliyorum ve onu degisken olarak atiyorum.
 export IMAGE_TAG_ADMIN_SERVER="${ECR_REGISTRY}/${APP_REPO_NAME}:admin-server-v${MVN_VERSION}-b${BUILD_NUMBER}" #env degiskeni olusturuyorum. Ecr repository ismini aliyorum app repo namei aliyorum. Admin server-v microservisin adi mvn versionla da version numarasini aliyorum. Build number da jenkinsden geliyor. Son calistirilan build numarasi geliyor.
 #bu islemi butun microserviceler icin yapiyorum. Yalnica prometheus ve grafanaya sabit tag veriyorum cunku bunlari ben develop etmiyorum.
@@ -1732,9 +1755,9 @@ MVN_VERSION=$(. ${WORKSPACE}/spring-petclinic-visits-service/target/maven-archiv
 export IMAGE_TAG_VISITS_SERVICE="${ECR_REGISTRY}/${APP_REPO_NAME}:visits-service-v${MVN_VERSION}-b${BUILD_NUMBER}"
 export IMAGE_TAG_GRAFANA_SERVICE="${ECR_REGISTRY}/${APP_REPO_NAME}:grafana-service"
 export IMAGE_TAG_PROMETHEUS_SERVICE="${ECR_REGISTRY}/${APP_REPO_NAME}:prometheus-service"
-
+```
     • Image lari build etmek icin daha once bir script hazirlamistim ancak dinamik tag olusturmami saglayacak yeni bir tag hazirladim. Jenkins folder icinde build-dev-docker-images-for-ecr.sh adinda bir script hazirladim.
-
+```bash
 docker build --force-rm -t "${IMAGE_TAG_ADMIN_SERVER}" "${WORKSPACE}/spring-petclinic-admin-server" #image tag admin server I yukaridan aldim sonra jenkinsdeki workspacedeki calisacagi yeri gosterdim.
 docker build --force-rm -t "${IMAGE_TAG_API_GATEWAY}" "${WORKSPACE}/spring-petclinic-api-gateway"
 docker build --force-rm -t "${IMAGE_TAG_CONFIG_SERVER}" "${WORKSPACE}/spring-petclinic-config-server"
@@ -1745,9 +1768,9 @@ docker build --force-rm -t "${IMAGE_TAG_VETS_SERVICE}" "${WORKSPACE}/spring-petc
 docker build --force-rm -t "${IMAGE_TAG_VISITS_SERVICE}" "${WORKSPACE}/spring-petclinic-visits-service"
 docker build --force-rm -t "${IMAGE_TAG_GRAFANA_SERVICE}" "${WORKSPACE}/docker/grafana"
 docker build --force-rm -t "${IMAGE_TAG_PROMETHEUS_SERVICE}" "${WORKSPACE}/docker/prometheus"
-
+```
     • Image lari ecr a push etmek icin jenkins folderin altinda push-dev-docker-images-to-ecr.sh scriptini yazdim.
-
+```bash
 # Provide credentials for Docker to login the AWS ECR and push the images
 aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REGISTRY} #ECR icin erisim yetkisi aliyorum bu command ile.
 
@@ -1761,7 +1784,7 @@ docker push "${IMAGE_TAG_VETS_SERVICE}"
 docker push "${IMAGE_TAG_VISITS_SERVICE}"
 docker push "${IMAGE_TAG_GRAFANA_SERVICE}"
 docker push "${IMAGE_TAG_PROMETHEUS_SERVICE}"
-
+```
     • Commit ve push ettim.
       
 git add .
@@ -1770,7 +1793,7 @@ git push --set-upstream origin feature/msp-17
 
     • Bu featurda olusturdugum scriptleri test etmek istiyorum bunun icin jenkinsde freestyle bir project olusturdum.
     • Jenkins>freestyleproejct>test-msp-17-scripts ismini verdim. Branches to build kismina */feature/msp-17 yazdim. Add build step kismina execute-shell altina alttaki kodu yazdim. Yapmis oldugum script leri sirasiyle buraya koydum.
-
+```bash
 PATH="$PATH:/usr/local/bin"
 APP_REPO_NAME="sezgin-repo/petclinic-app-dev" # Write your own repo name
 AWS_REGION="us-east-1" 
@@ -1784,11 +1807,11 @@ aws ecr create-repository \
 . ./jenkins/prepare-tags-ecr-for-dev-docker-images.sh #tagleri hazirladim.
 . ./jenkins/build-dev-docker-images-for-ecr.sh #imagelari build ettim
 . ./jenkins/push-dev-docker-images-to-ecr.sh #imagelari push ettim
-
+```
     • build ettim. Scriptlerimde sorun olmadigini gordum.
     • Daha once localde build etmek icin olusturmus oldugum bir docker-compose file im vardi ancak bu docker-compose file indaki image isimleri statik ama ben artik her buildde her push da tagleri degisen imagelar olusturuyorum. Benim de bu dinamik bir sekilde olusturdum imagelarin taglerini ecr dan alabilmem lazim. Bunun icin docker-composeumu da buna uygun hale getirmem gerekiyor.
     • Petclinic in altinda docker-compose-swarm-dev.yml adinda bir docker-compose file yazdim.
-
+```yaml
 Version: '3.8' #version degisti ama cok onemli degil
 
 services:
@@ -1946,16 +1969,16 @@ networks:
     register: output
 
 - debug: msg="{{ output.stdout }}"
-
+```
     • ansible/playbooks klasorunun altinda deploy_app_on_docker_swarm.sh adinda bir script olusturdum.
-
+```bash
 PATH="$PATH:/usr/local/bin" #ansible in calismasi gerekn path
 APP_NAME="petclinic" #app name adi
 envsubst < docker-compose-swarm-dev.yml > docker-compose-swarm-dev-tagged.yml #docker-compose-swarm-dev.yml icindeki degiskenleri aliyor mevcut o andaki degiskenle ile degistirip bize statik bir docker swam dosyasi olusturuyor. docker-compose-swarm-dev-tagged.yml bu dosyanin icine value larini yaziyor. Yani bu dosya icinde olusturulan tum env variable lari alma imkanim oluyor. Her pipeline I build ettigimde oradaki degiskenleri ayri bir dosyaya yazdirmis oluyorum. 
 ansible-playbook -i ./ansible/inventory/dev_stack_dynamic_inventory_aws_ec2.yaml -b --extra-vars "workspace=${WORKSPACE} app_name=${APP_NAME} aws_region=${AWS_REGION} ecr_registry=${ECR_REGISTRY}" ./ansible/playbooks/pb_deploy_app_on_docker_swarm.yaml #playbook olustururken degiskenlerimin hepsini belirtmek zorundayim. Dinamik olarak olusturdugum ansible dosyasi icerisindeki tagleri buraya yazmam gerekiyor. 
-
+```
     • Selenium calismasi icin chrome un calismasi lazim. Ama instance larda chrome yok. Bu komutla arka planda chromeu gormeden testlerim yapiliyor. Pipelineimi faal hale getirmeden once functional testlerim yapilacagi ortami da test etmek istiyorum. Bunun icin Selenium-jobs folderin icine dummy_selenium_test_headless.py fileini yaziyorum.
-
+```js
 from selenium import webdriver
 
 chrome_options = webdriver.ChromeOptions()
@@ -1973,9 +1996,9 @@ if "I'm Feeling Lucky" in source:
 else:
   print("Test failed")
 driver.close()
-
+```
     • ansible/playbooks un icine pb_run_dummy_selenium_job.yaml filei ni yerlestirdim.
-      
+```yaml      
 ---
 - hosts: all
   tasks:
@@ -1987,12 +2010,12 @@ driver.close()
   - name: show results #sonuclari da ekrana yazdir komutu
     debug: msg="{{ item.stdout }}"
     with_items: "{{ output.results }}"
-
+```
     • Bu olusturdugumuz ortami calistirmak icin Ansible/scripts klasorunun altina run_dummy_selenium_job.sh ekliyorum.
-
+```bash
 PATH="$PATH:/usr/local/bin"
 ansible-playbook --connection=local --inventory 127.0.0.1, --extra-vars "workspace=${WORKSPACE}" ./ansible/playbooks/pb_run_dummy_selenium_job.yaml
-
+```
     • Commit ve push ettim.
       
 git add .
@@ -2000,14 +2023,14 @@ git commit -m 'added scripts for running dummy selenium job'
 git push --set-upstream origin feature/msp-17
 
     • Son olusturugum scripti denemek icin bir freestyle project olusturdum. Jenkins>Dashboard>newitem>freestyleproject>test-running-dummy-selenium-job OK dedim. Source code management>git> repository url yapistirdim. Branches to build>feature/msp-17. Add build step kismina son scriptimi yazdim.
-
+```bash
 PATH="$PATH:/usr/local/bin"
 ansible-playbook --connection=local --inventory 127.0.0.1, --extra-vars "workspace=${WORKSPACE}" ./ansible/playbooks/pb_run_dummy_selenium_job.yaml
-
+```
     • Build ettim. Bu job benim jenkins serverimda olustu ama normalde ben bunun benim olusturacagim ec2 larin icinde olusmasini istiyorum. Bunun icin env hazirlamam gerekiyor.
 
     • Gercek fonksiyonal testlerimi olusturmak icin playbookumu olusturuyorum. selenium-jobs folderinin altina pb_run_selenium_jobs.yaml dosyasini ekliyorum. 
-
+```yaml
 ---
 - hosts: all #dummy_run yaml dan tek farki burada py ile test* ile baslayan tum test dosyalarini test ediyoruz. Ayni image ile test ediyoruz. Ayni ciktilari istiyorum. Yine ayni sekilde loop yapiyorum. Dummy test yalnizca test amacli imagein calisip calismadigini test amacli bir yaml di bu ise tum testlerin calistirilmasi amaclanan bir yaml.
   tasks:
@@ -2019,14 +2042,14 @@ ansible-playbook --connection=local --inventory 127.0.0.1, --extra-vars "workspa
   - name: show results
     debug: msg="{{ item.stdout }}"
     with_items: "{{ output.results }}"
-
+```
     • Yukaridaki playbooku calistirmak icin script yazdim. ansible/scripts altina run_selenium_jobs.sh sciptini yazdim.
-
+```bash
 PATH="$PATH:/usr/local/bin"
 ansible-playbook -vvv --connection=local --inventory 127.0.0.1, --extra-vars "workspace=${WORKSPACE} master_public_ip=${GRAND_MASTER_PUBLIC_IP}" ./ansible/playbooks/pb_run_selenium_jobs.yaml #-vvv(detayli log almak icin kullandim). 
-
+```
     • Nightliy pipeline icin jenkins dosyasinin altinda jenkinsfile-petclinic-nightly bir file olusturdum.
-
+```groovy
 pipeline {
     agent { label "master" }
     environment {
@@ -2216,7 +2239,7 @@ pipeline {
         }
     }
 }
-
+```
     • Commit ve push
 
 git add .
@@ -2230,7 +2253,7 @@ git push origin dev
     • Build ettim.
     • Basarili oldu. CF silindi tum instancelar silindi.
       
-      18. MSP 18 - Create a QA Environment on Docker Swarm with Cloudformation and Ansible
+# 18. MSP 18 - Create a QA Environment on Docker Swarm with Cloudformation and Ansible
 
 QA Setup for Release
 Create a Key Pair for QA Environment
@@ -2259,7 +2282,7 @@ git checkout feature/msp-18
     • Onceki pipelinedaki infrastructureun simdi olusturacagimdan bir farki yok. Ayni environmenti kullaniyorum. Tek farki environment tag lerim dev olarak taglemistim ama bunda ise tek fark taginin qa olmasi ayni da  olabilirdi ama buyuk bir sirkette olsa takimlar farkli olurdu o zaman gormek acisindan boyle kullanmak daha iyi.
       
     • Infrastructure>docker-swarm-infrastructure-cfn-template.yml olusturdum.
-
+```yaml
 AWSTemplateFormatVersion: 2010-09-09
 
 Description: >
@@ -2441,9 +2464,9 @@ Outputs:
     Value: !Sub 
       - ${PublicAddress}
       - PublicAddress: !GetAtt DockerInstance5.PublicDnsName
-
+```
     • Keypair olusturmak icin Jenkins>create-permanent-key-pair-for-qa-environment.sh scriptini olusturdum.
-
+```bash
 PATH="$PATH:/usr/local/bin"
 APP_NAME="petclinic"
 CFN_KEYPAIR="sezgin-${APP_NAME}-qa.key"
@@ -2453,9 +2476,9 @@ chmod 400 ${CFN_KEYPAIR}
 mkdir -p ${JENKINS_HOME}/.ssh
 mv ${CFN_KEYPAIR} ${JENKINS_HOME}/.ssh/${CFN_KEYPAIR}
 ls -al ${JENKINS_HOME}/.ssh
-
+```
     • infrastructurei calistirmak icin infrastructure>create-qa-infrastructure-cfn.sh scriptini yazdim.
-
+```bash
 PATH="$PATH:/usr/local/bin"
 APP_NAME="petclinic"
 APP_STACK_NAME="sezgin-$APP_NAME-App-QA-${BUILD_NUMBER}"
@@ -2463,9 +2486,9 @@ CFN_KEYPAIR="sezgin-${APP_NAME}-qa.key"
 CFN_TEMPLATE="./infrastructure/qa-docker-swarm-infrastructure-cfn-template.yml"
 AWS_REGION="us-east-1"
 aws cloudformation create-stack --region ${AWS_REGION} --stack-name ${APP_STACK_NAME} --capabilities CAPABILITY_IAM --template-body file://${CFN_TEMPLATE} --parameters ParameterKey=KeyPairName,ParameterValue=${CFN_KEYPAIR}
-
+```
     • 5 tane instancei bu scriptle olusturacagim. Simdi ansible ile confugurasyonlarini yapmam lazim. Daha once dev_stack_dynamic_inventory_aws_ec2.yaml dosyasi ile bunu yapmistim. Simdi ise ansible/inventory>qa_stack_dynamic_inventory_aws_ec2.yaml dosyasini olusturuyorum. Bunlar arasindaki fark taglemeler farkli orada dev ile taglemistim simdi qa ile tagledim.
-
+```yaml
 plugin: aws_ec2
 regions:
   - "us-east-1"
@@ -2488,9 +2511,9 @@ hostnames:
   - "private-ip-address"
 compose:
   ansible_user: "'ec2-user'"
-
+```
     • Ansible configurasyonunu calistirmak icin ansible/scripts>qa_build_deploy_environment.sh scriptini yazdim. Bir onceki pipeline da yazdigim playbooklarin aynisini kullanacagim. Bu script de aynisi olacak.
-
+```bash
 PATH="$PATH:/usr/local/bin"
 APP_NAME="petclinic"
 CFN_KEYPAIR="sezgin-${APP_NAME}-qa.key"
@@ -2506,10 +2529,10 @@ ansible-playbook -i ./ansible/inventory/qa_stack_dynamic_inventory_aws_ec2.yaml 
 ansible-playbook -i ./ansible/inventory/qa_stack_dynamic_inventory_aws_ec2.yaml -b ./ansible/playbooks/pb_join_docker_swarm_managers.yaml
 # Swarm Setup for Workers nodes
 ansible-playbook -i ./ansible/inventory/qa_stack_dynamic_inventory_aws_ec2.yaml -b ./ansible/playbooks/pb_join_docker_swarm_workers.yaml
-
+```
 
     • Weekly pipleline icin 2 tane jenkins file gerekli 1.si environment in yani ec2 larin bulundugu infrastructurein olusturulmasi 2.si ise uygulamanin deploy edilmesi. Benim infrastructureim her zaman ayakta kalacak ben uygulamayi yeniden deploy edecegim bu nedenle infrastructre in bozulmasini istemiyorum. Uygulamayi deploy etmek icin 2. jenkinsfile i yazdim. Jenkins>jenkinsfile-create-qa-environment-on-docker-swarm adinda bir jenkinsfile olusturdum.
-
+```groovy
 pipeline {
     agent { label "master" }
     environment {
@@ -2581,7 +2604,7 @@ pipeline {
         }
     }
 }
-
+```
     • Commit ve push.
 
 git add .
@@ -2592,7 +2615,7 @@ git merge feature/msp-18
 git push origin dev
 
     • Buradaki key sabit bir key olacak cunku 1 hafta ayakta kalacak. Weekly job icin Jenkins>Dashboard>new item>freestyle>create-permanent-key-pair-for-petclinic-qa-env isimli bir jenkins job OK. Build>execute shell
-
+```bash
 PATH="$PATH:/usr/local/bin"
 APP_NAME="petclinic"
 CFN_KEYPAIR="sezgin-${APP_NAME}-qa.key"
@@ -2602,21 +2625,19 @@ chmod 400 ${CFN_KEYPAIR}
 mkdir -p ${JENKINS_HOME}/.ssh //key in surekli kalmasi icin jenkins home a tasiyorum. Onun icin once ssh dosyasi actim
 mv ${CFN_KEYPAIR} ${JENKINS_HOME}/.ssh/${CFN_KEYPAIR}
 ls -al ${JENKINS_HOME}/.ssh //key in surekli kalmasi icin jenkins home a tasiyorum.
-
+```
     • BUILD. Key olustu jenkins instanceimin icinde gorebiliyorum.
       
     • Jenkins>Dasghboard>pipeline>create-qa-environment-on-docker-swarm OK. Git source>project URL yazdim. Branches to build>*/dev yazdim. Script path>jenkins>jenkinsfile-create-qa-environment-on-docker-swarm SAVE.
     • BUILD. 5 instance in oldugu environment hazir durumda. Bundan sonraki asama deploy asamasi olacak bundan sonra bununla ilgili hazirliklari yapacagim.
       
-19. MSP 19 - Prepare Build Scripts for QA Environment
+# 19. MSP 19 - Prepare Build Scripts for QA Environment
 
 QA Setup for Release
 Prepare Build Scripts for QA Environment
 MSP-19
 Prepare Build Scripts for creating ECR Repo for QA, building QA Docker images, deploying app with Docker Compose.
 feature/msp-19
-
-
 
     • Yeni feature olusturdum.
       
@@ -2626,7 +2647,7 @@ git checkout feature/msp-19
 
     • Su asamada imagelari push edecek bir repom yok. Repoyu olusturacak bir script olusturmam lazim ve bu imagelari tagleyecek bir script yazmam lazim. 
     • Ecr repo olustruyorum. jenkins>dashboard>newItem>freeStyle>create-ecr-docker-registry-for-petclinic-qa OK. ExecuteShell alttaki komutu yazdim.
-
+```bash
 PATH="$PATH:/usr/local/bin"
 APP_REPO_NAME="sezgin-repo/petclinic-app-qa" //farkli olarak yalnizca dev yerine qa yazdim
 AWS_REGION="us-east-1"
@@ -2636,10 +2657,10 @@ aws ecr create-repository \
   --image-scanning-configuration scanOnPush=false \
   --image-tag-mutability MUTABLE \
   --region ${AWS_REGION}
-
+```
     • BUILD. Repom olustu.
     • Image lari push edecegim repository hazir once imagelarimi tagliyorum. Daha once bu komutu acikladim, buradaki tek farki dev degil qa olarak taglenmis durumda. jenkins>prepare-tags-ecr-for-qa-docker-images.sh icine scriptimi yaziyorum.
-
+```bash
 MVN_VERSION=$(. ${WORKSPACE}/spring-petclinic-admin-server/target/maven-archiver/pom.properties && echo $version)
 export IMAGE_TAG_ADMIN_SERVER="${ECR_REGISTRY}/${APP_REPO_NAME}:admin-server-qa-v${MVN_VERSION}-b${BUILD_NUMBER}"
 MVN_VERSION=$(. ${WORKSPACE}/spring-petclinic-api-gateway/target/maven-archiver/pom.properties && echo $version)
@@ -2658,9 +2679,9 @@ MVN_VERSION=$(. ${WORKSPACE}/spring-petclinic-visits-service/target/maven-archiv
 export IMAGE_TAG_VISITS_SERVICE="${ECR_REGISTRY}/${APP_REPO_NAME}:visits-service-qa-v${MVN_VERSION}-b${BUILD_NUMBER}"
 export IMAGE_TAG_GRAFANA_SERVICE="${ECR_REGISTRY}/${APP_REPO_NAME}:grafana-service"
 export IMAGE_TAG_PROMETHEUS_SERVICE="${ECR_REGISTRY}/${APP_REPO_NAME}:prometheus-service"
-
+```
     • imagelarimi build etmek icin jenkins>build-qa-docker-images-for-ecr.sh scripti yazdim. 
-
+```bash
 docker build --force-rm -t "${IMAGE_TAG_ADMIN_SERVER}" "${WORKSPACE}/spring-petclinic-admin-server"
 docker build --force-rm -t "${IMAGE_TAG_API_GATEWAY}" "${WORKSPACE}/spring-petclinic-api-gateway"
 docker build --force-rm -t "${IMAGE_TAG_CONFIG_SERVER}" "${WORKSPACE}/spring-petclinic-config-server"
@@ -2671,10 +2692,10 @@ docker build --force-rm -t "${IMAGE_TAG_VETS_SERVICE}" "${WORKSPACE}/spring-petc
 docker build --force-rm -t "${IMAGE_TAG_VISITS_SERVICE}" "${WORKSPACE}/spring-petclinic-visits-service"
 docker build --force-rm -t "${IMAGE_TAG_GRAFANA_SERVICE}" "${WORKSPACE}/docker/grafana"
 docker build --force-rm -t "${IMAGE_TAG_PROMETHEUS_SERVICE}" "${WORKSPACE}/docker/prometheus"
-
+```
 
     • Imagelarimi push etmek icin script yazdim. jenkins>push-qa-docker-images-to-ecr.sh
-
+```bash
 aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REGISTRY}
 docker push "${IMAGE_TAG_ADMIN_SERVER}"
 docker push "${IMAGE_TAG_API_GATEWAY}"
@@ -2686,9 +2707,9 @@ docker push "${IMAGE_TAG_VETS_SERVICE}"
 docker push "${IMAGE_TAG_VISITS_SERVICE}"
 docker push "${IMAGE_TAG_GRAFANA_SERVICE}"
 docker push "${IMAGE_TAG_PROMETHEUS_SERVICE}"
-
+```
     • docker-compose-swarm-qa.yml adinda docker-compose file yazdim.
-
+```yaml
 version: '3.8'
 
 services:
@@ -2887,16 +2908,16 @@ networks:
     register: output
 
   - debug: msg="{{ output.stdout }}"
-
+```
     • ansible>scripts>deploy_app_on_qa_environment.sh scriptini yaziyorum.
-
+```bash
 PATH="$PATH:/usr/local/bin"
 APP_NAME="petclinic"
 sed -i "s/APP_STACK_NAME/${APP_STACK_NAME}/" ./ansible/inventory/qa_stack_dynamic_inventory_aws_ec2.yaml
 envsubst < docker-compose-swarm-qa.yml > docker-compose-swarm-qa-tagged.yml
 #swarm-qa.yaml daki degiskenlerin degerlerini replace edip yeni bir dosya olusturuyor. Ansible playbook bu dosyayi alacak grand-masterin icine atacak ve build stack komutunu calistiracak 
 ansible-playbook -i ./ansible/inventory/qa_stack_dynamic_inventory_aws_ec2.yaml -b --extra-vars "workspace=${WORKSPACE} app_name=${APP_NAME} aws_region=${AWS_REGION} ecr_registry=${ECR_REGISTRY}" ./ansible/playbooks/pb_deploy_app_on_qa_environment.yaml
-
+```
     • Commit ve push
 
 git add .
@@ -2906,7 +2927,7 @@ git checkout dev
 git merge feature/msp-19
 git push origin dev
 
-      20. MSP 20 - Build and Deploy App on QA Environment Manually
+# 20. MSP 20 - Build and Deploy App on QA Environment Manually
       
 QA Setup for Release
 Build and Deploy App on QA Environment Manually
@@ -2918,7 +2939,7 @@ feature/msp-20
     • Bu asamada uygulamamizi deploy edecek ansible playbooku olusturdum.
 
     • jenkins>build-and-deploy-petclinic-on-qa-env-manually.sh scriptini olusturdum. 
-
+```bash
 PATH="$PATH:/usr/local/bin"
 APP_NAME="petclinic"
 APP_REPO_NAME="sezgin-repo/petclinic-app-qa"
@@ -2941,7 +2962,7 @@ echo 'Deploying App on Swarm'
 . ./ansible/scripts/deploy_app_on_qa_environment.sh
 echo 'Deleting all local images'
 docker image prune -af //imagelar jenkins servisde kalmasin bosuna yer kaplamasin jenkins serverdaki imagelar silinsin diye bu komutu koydum
-
+```
     • Commit ve push.
 
 git add .
@@ -2958,7 +2979,7 @@ git merge dev
 git push origin release
 
     • Yukaridaki scriptimin dogru oldugunu kontrol ettim onun icin bir jenkins job yazdim. Jenkins>dashboard>newItem>freeStyleProject>build-and-deploy-petclinic-on-qa-env-manually.sh OK. Project URL yazdim. Release branch yazdim.
-
+```bash
 PATH="$PATH:/usr/local/bin"
 APP_NAME="petclinic"
 APP_REPO_NAME="sezgni-repo/petclinic-app-qa"
@@ -2981,10 +3002,10 @@ echo 'Deploying App on Swarm'
 . ./ansible/scripts/deploy_app_on_qa_environment.sh
 echo 'Deleting all local images'
 docker image prune -af //imagelar jenkins servisde kalmasin bosuna yer kaplamasin jenkins serverdaki imagelar silinsin diye bu komutu koydum
-
+```
     • BUILD. Uygulama basari ile deploy edildi. 
       
-      21. MSP 21 - Prepare a QA Pipeline
+# 21. MSP 21 - Prepare a QA Pipeline
 
 
 QA Setup for Release
@@ -3002,7 +3023,7 @@ git branch feature/msp-21
 git checkout feature/msp-21
 
     • jenkins>jenkinsfile-petclinic-weekly-qa scriptini yazdim.
-
+```groovy
 pipeline {
     agent { label "master" }
     environment {
@@ -3082,7 +3103,7 @@ pipeline {
         }
     }
 }
-
+```
 
     • Commit push.
 
@@ -3102,7 +3123,7 @@ git push origin release
     • jenkins>dashboard>pipeline>petclinic-weekly-qa OK. Build-periodically>59 23 * * 0. Pipeline>Project URL yapistir. Brances>*/release. Script Path>jenkins/jenkinsfile-oetclinic-weekly-qa yazdim.
     • BUILD. Docker swarm a basarili bir sekilde uygulama deploy edildi. Manuel testerlar icin environment hazir bir haftalik test yapmak icin hazir.
 
-      22. MSP 22 - Prepare Petlinic Kubernetes YAML Files
+# 22. MSP 22 - Prepare Petlinic Kubernetes YAML Files
 
 
 Staging and Production Setup
@@ -3120,7 +3141,7 @@ git checkout feature/msp-22
 
     • k8s folderi olusturdum.
     • K8s nin altinda docker-compose.yml fileini olusturdum. Docker-Compose.yaml dan k8s olusturdum. Deployment ve ingresse ihtiyacim var.
-
+```yaml
 version: '3'
 services:
   config-server:
@@ -3201,7 +3222,7 @@ services:
     - 9091:9090
     labels:
       kompose.image-pull-secret: "regcred"
-
+```
 
     • conversion tool olarak Kompose yukluyorum. Bu tool sayesinde docker-compose.yml filei k8s ihtiyacimiz olan objelerin yml filelerini veriyor.
 
@@ -3213,11 +3234,11 @@ kompose version
 
     • k8s altinda base, staging, prod klasorleri olusturdum.
     • k8s/base inin altina geldim.
-
+```bash
 kompose convert -f k8s/docker-compose.yml -o k8s/base #docker-compose.yml filenin donustur ve k8s klasorunun icine at.
-
+```
     • Mikroservice leri sirasiyla baslatmak icin init-containers ile deployment files lari guncelledim. Docker-swarmda depends on vardi veya dockerize ile calisip calismadigini bekliyorduk. Bunu da k8s de init container ile yapiyoruz. Butun k8s/base klasorunun altindaki deployment yaml lari guncelledim. Sadece config serverda birsey olmayacak cunku o ilk olusuyor. Kimseyi beklemiyor.
-
+```bash
 # for discovery server #sadece discovery icin bunu
       initContainers:
       - name: init-config-server
@@ -3228,10 +3249,10 @@ kompose convert -f k8s/docker-compose.yml -o k8s/base #docker-compose.yml fileni
       - name: init-discovery-server
         image: busybox
         command: ['sh', '-c', 'until nc -z discovery-server:8761; do echo waiting for discovery-server; sleep 2; done;']
-
+```
 
     • customers-service-ingress.yaml fileinin guncelledim. Ilgili kisimlari guncelliyorum. Tum dosyasinin icerigi bu sekilde olmayacak.
-
+```yaml
 metadata:
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /$2
@@ -3248,10 +3269,10 @@ spec:
           serviceName: customers-service
           servicePort: 8081
         path: /api/customer(/|$)(.*)
-
+```
 
     • visits-service-ingress.yaml fileini guncelledim. Ilgili kisimlari guncelliyorum. Tum dosyanin icerigi bu sekilde olmayacak.
-
+```yaml
 metadata:
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /$2
@@ -3264,10 +3285,10 @@ spec:
           serviceName: visits-service
           servicePort: 8082
         path: /api/visit(/|$)(.*)
-
+```
 
     • vets-service-ingress.yaml fileini guncelledim. Ilgili kisimlari guncelliyorum. Tum dosyasinin icerigi bu sekilde olmayacak.
-
+```yaml
 metadata:
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /$2
@@ -3280,11 +3301,12 @@ spec:
           serviceName: vets-service
           servicePort: 8083
         path: /api/vet(/|$)(.*)
-
+```
     • docker-compose file imiz daha onceden hazirdi ben bunu k8s e cevirmek istiyorum. Bunu zaten kompose convert komutu ile onceden yapmistim bunda bir sorun yok. Kustomazation tool u da ayri bir tool. kustomization.yml dosyasi icerisine koydugum resources dosyasinda kustomization.yml dosyasi icinde belirttigim degisiklikleri yapiyor bu degisiklikleri kubectl kustomize ./ komutu ile gorebilirim ama degisikligi uygulamam icin kubectl apply -k ./ komutu ile yapiyorum. Bir diger yontem de compozing. kustomization.yml icerisine resources olarak iki tane dosya yazdigimda ise kubectl apply -k dedigimde bu iki dosyayi ayni anda calistirmis oluyorum. Tek bir komutla birden fazla kaynagi yonetmeme imkan veriyor. Dosyanin icerisindeki alanlari degistiriyor. Dosya orjinal olarak kaliyor sadece degistirip yaratiyor dosya orjinal kaliyor. kustomization.yml da patches ise degisikligi nasil yapacagimi baska bir yaml dosyasi uzerinden gosteriyor.
     • Envsubst komutu: envsubst < ./envsubst-test > ./new-envsubst-test  bu komutla /envsubst-test dosyasinin icindeki keylerin value larini ./new-envsubst-test dosyasina yazdiriyor
 
     • Base>kustomization-template.yml isimli filei koy. Asagidaki imagelari servicelerin deployment dosyalarindan aliyor. Imagelardaki name imagein isminin eski hali ben bu ismi her build ettikten sonra degistirmek istiyorum. Yeni imagain ismini bu tool sayesinde deployment dosyalarina koymak istiyorum. 
+```yaml
 resources:
 - admin-server-deployment.yaml
 - api-gateway-deployment.yaml
@@ -3334,18 +3356,18 @@ images:
   newName: "${IMAGE_TAG_GRAFANA_SERVICE}"
 - name: IMAGE_TAG_PROMETHEUS_SERVICE
   newName: "${IMAGE_TAG_PROMETHEUS_SERVICE}"
-
+```
     • k8s/staging/kustomization.yml ekledim. Namespace ekle. Sonra base klasoru icine replica-count yamli bul dedim. Bundakilere bakarak kustomize yaptim.
-
+```yaml
 # kustomization.yml
 namespace: "petclinic-staging-ns"
 bases:
 - ../base
 patches:
 - replica-count.yml
-
+```
     • k8s/staging/replica-count.yml filelarini ekledim. Bastaki bilgiler apiversion, kind, metadata sonra degistirilecek kismi giriyorum. Bu bilgileri ilgili yerde kustomize ediyorum
-
+```yaml
 # replica-count.yml
 apiVersion: apps/v1
 kind: Deployment
@@ -3416,18 +3438,18 @@ spec:
           serviceName: visits-service
           servicePort: 8082
         path: /api/visit(/|$)(.*)
-
+```
     • k8s/prod/kustomization.yml dosyasini koydum.#pod icindeki kustomization dosyami kontrol ettim. Kustomization komutu ne yapiyor k8s/prod daki kustomization.yml dosyasina bakiyor. Bu dosyanin icinde asagidaki yaml var. . ../base e bak onun icindeki kustomization.yml I bul.  Oradaki resources lara bak onlarin her birisine namespace ekle. Bunu yaparak bunun ciktisini da ekrana cikariyor.
-
+```yaml
 # kustomization.yml
 namespace: "petclinic-prod-ns"
 bases:
 - ../base
 patches:
 - replica-count.yml
-
+```
     • k8s/prod/replica-count.yml dosyasini koydum. Api-gateway in replicasini 5 yap. 
-
+```yaml
 # replica-count.yml
 apiVersion: apps/v1
 kind: Deployment
@@ -3435,16 +3457,17 @@ metadata:
   name: api-gateway
 spec:
   replicas: 5
-
+```
 
     • kubectl I yukledim ve setup ini yaptim.
-
+```bash
 curl -o kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.18.9/2020-11-02/bin/linux/amd64/kubectl
 sudo mv kubectl /usr/local/bin/kubectl
 chmod +x /usr/local/bin/kubectl
 kubectl version --short --client
-
+```
     • kustomization. Tool unun calistigini kontrol ediyorum. Export ederek env variable giriyorum. 
+```bash
 #export ile env variable giriyorum.
 
 export IMAGE_TAG_CONFIG_SERVER="testing-image-1"    
@@ -3457,13 +3480,13 @@ export IMAGE_TAG_ADMIN_SERVER="testing-image-7"
 export IMAGE_TAG_HYSTRIX_DASHBOARD="testing-image-8"
 export IMAGE_TAG_GRAFANA_SERVICE="testing-image-9"
 export IMAGE_TAG_PROMETHEUS_SERVICE="testing-image-10"
-# create base kustomization file from template by updating with environments variables #bu komutla ustomization-template.yml icindeki envsubst lari kustomization.yml icine at dedim
+# create base kustomization file from template by updating with environments variables #bu komutla kustomization-template.yml icindeki envsubst lari kustomization.yml icine at dedim
 envsubst < k8s/base/kustomization-template.yml > k8s/base/kustomization.yml
 # test customization for production 
 kubectl kustomize k8s/prod/
 # test customization for staging #ayni islemi staging icin de yaptim
 kubectl kustomize k8s/staging/
-
+```
     • Commit ve Push
 
 git add .
@@ -3473,8 +3496,7 @@ git checkout release
 git merge feature/msp-22
 git push origin release
 
-      23. MSP 23 - Prepare High-availability RKE Kubernetes Cluster on AWS EC2
-
+# 23. MSP 23 - Prepare High-availability RKE Kubernetes Cluster on AWS EC2
 
 Staging and Production Setup
 Prepare HA RKE Kubernetes Cluster
@@ -3483,7 +3505,7 @@ Prepare High-availability RKE Kubernetes Cluster on AWS EC2
 feature/msp-23
 
 
-    • Rancher: Bu bir server. Nasil Jenkins server vasitasiyla AWS deki infrastructure imizi yonetiyoruz bunun sayesinde de kubernetes clusterimizi yonetiyoruz. Hem rancher vasitasiyla kuruyorum hem de yonetiyorum. Istersem birden fazla yerde k8s imizi rancher vasitasiyla yonetebilirim. Ben su an bir server icine rancher kurdum maliyet olmasin ve egitim olsun diye ancak gercek ortamda 3 adet ec2 instance uzerine 1 rancher kurarim yani biri cokerse digerleri ile bunu yedeklerim. Rancher benim managerim olacak islemlerimi onun izerinden yapacagim.
+    • Rancher: Bu bir server. Nasil Jenkins server vasitasiyla AWS deki infrastructure imizi yonetiyoruz bunun sayesinde de kubernetes clusterimizi yonetiyoruz. Hem rancher vasitasiyla kuruyorum hem de yonetiyorum. Istersem birden fazla yerde k8s imizi rancher vasitasiyla yonetebilirim. Ben su an bir server icine rancher kurdum maliyet olmasin ve egitim olsun diye ancak gercek ortamda 3 adet ec2 instance uzerine 1 rancher kurarim yani biri cokerse digerleri ile bunu yedeklerim. Rancher benim managerim olacak islemlerimi onun uzerinden yapacagim.
       
     • feature ekledim.
 
@@ -3492,7 +3514,7 @@ git branch feature/msp-23
 git checkout feature/msp-23
 
     • infrastructure/sezgin-rke-controlplane-policy.json policesini ekledim. Bunlari amazonda olusturacagim ama kaybolmasin diye buraya koydum. Rancher in amazondaki ihtiyac duydugu yetkileri verdim. Tek bir rancher serverimiz oldugu icin manager yetkilerini de buna verecegim worker yetkilerini de buna verecegim. Eger 3 instance olsa idi birine manager digerlerine worker yetkileri verirdim.
-      
+```js  
 {
 "Version": "2012-10-17",
 "Statement": [
@@ -3560,9 +3582,9 @@ git checkout feature/msp-23
   }
 ]
 }
-
+```
     • infrastructure/sezgin-rke-etcd-worker-policy.json policesini ekledim.
-
+```js
 {
 "Version": "2012-10-17",
 "Statement": [
@@ -3583,7 +3605,7 @@ git checkout feature/msp-23
     }
 ]
 }
-
+```
     • AWS console dan IAM servisine girdim. Create policy>JSON>sezgin-rke-controlplane-policy  >review policy>name>sezgin-rke-controlplane-policy>create policy yaparak policy olusturdum.
     • AWS console dan IAM servisine girdim. Create policy>JSON>sezgin-rke-controlplane-policy  >review policy>name>sezgin-rke-etcd-worker-policy>create policy yaparak policy olusturdum.
     • AWS console dan roles>create role>EC2>next>ezgin-rke-controlplane-policy, sezgin-rke-controlplane-policy>next>next>rolename>sezgin-rke-role>next role olusturuldu.
@@ -3614,13 +3636,13 @@ Allow HTTPS protocol (TCP on port 443) to 35.160.43.145/32, 35.167.242.46/32, 52
 Allow TCP on port 2376 to any node IP from a node created using Node Driver for Docker machine TLS port.
 
     • Rancher a jenkins serverdan baglanabilmek icin bir keypair yarattim.
-
+```bash
 aws ec2 create-key-pair --region us-east-1 --key-name sezgin-rancher.key --query KeyMaterial --output text > ~/.ssh/sezgin-rancher.key
 chmod 400 ~/.ssh/sezgin-rancher.key
-
+```
     • Rancher icin Ubuntu Server 20.04 LTS (HVM) ami-0885b1f6bd170450c (64-bit x86) with t2.medium type, 16 GB root volume, call-rke-cluster-sg security group, sezgin-rke-role IAM Role, Name:Sezgin-Rancher-Cluster-Instance tag, Key = kubernetes.io/cluster/sezgin-Rancher and Value = owned olan baska bir key daha ekledim and sezgin-rancher.key key-pair. 
     •  Rancher dokumantasyonundan bakildiginda Amazona rancher kurulacaksa bu taglari atamamiz gerektigi zaten yaziyor. Bu tagler sayesinde rancher nodelari takip ediyor. EC2 nun Subnet ve security-group icin tag atiyorum Key = kubernetes.io/cluster/sezgin-Rancher and Value = owned. Security groups>sezgin-rke-cluster-sg>tags> manage tags>key= kubernetes.io/cluster/sezgin-Rancher, Value = owned>SAVE. subnets>tags>add new tag> Key = kubernetes.io/cluster/sezgin-Rancher ve Value = owned>SAVE.
-    • Jenkis server a girip docker yukleyecegim. Neden docker yuklemem gerekir Rancher serverimiza rancher kubernetes engine kurmzmiz icin dockera ihtiyamiz var.
+    • Jenkis server a girip docker yukleyecegim. Neden docker yuklemem gerekir Rancher serverimiza rancher kubernetes engine kurmaxxxxx            miz icin dockera ihtiyamiz var.
     • Jenkins serveri bastion host olarak kullanip rancher a baglaniyorum.
       ssh -i “sezgin-rancher.key” ubuntu@<ip adresi>.compute.1.amazonaws.com
     • docker yukluyorum.
@@ -3671,14 +3693,14 @@ Target group        : `sezgin-rancher-http-80-tg` target group
       * Certificate yoksa certificate almak icin ACM (Amazon Certificate Manager)>domain name>*.drsezginerdem.com>next>DNS validation>next>key=name value=sezgin>CONFIRM>CONTINUE.
     • Load balancerimi configure ettim. AWS Console>Load Balancer>listeners>HTTP 80>edit>forward to delete> add action>redirect>https>443>update
     • Route 53>hosted zone>create record>simple record>define simple record>rancher>alian to aplication and classic load balancer>us-east-1>route type>A-Route traffic to an IP4 address and some AWS resources>define simple record>create records.
-    • RKE kubernetes kurmak icin bir tool. bunun vasitasiyla kubernetes kuracagim neye ihtiyacim var bunun vasitasiyla ranchera kubernetes kuracagim. Docker kurdum zaten. Rancher severa geldim. RKE toolunu kuruyorum.
+    • RKE kubernetes kurmak icin bir tool. Bunun vasitasiyla kubernetes kuracagim. Docker kurdum zaten. Rancher severa geldim. RKE toolunu kuruyorum.
 
 curl -SsL "https://github.com/rancher/rke/releases/download/v1.1.12/rke_linux-amd64" -o "rke_linux-amd64"
 sudo mv rke_linux-amd64 /usr/local/bin/rke
 chmod +x /usr/local/bin/rke
 rke --version
 
-    • rancher servere kubernets kurdum. infrastructure>rancher-cluster.yml ekledim.
+    • rancher servere kubernetes kurdum. infrastructure>rancher-cluster.yml ekledim.
 
   - address: 3.237.46.200 #rancher in public IPsi
     internal_address: 172.31.67.23 #rancher in private IPsi
@@ -3706,7 +3728,7 @@ ingress:
 
 rke up --config ./rancher-cluster.yml
 
-    • Kubernetes clusterinin kurulumunun basarili olup olmadini kontrol ediyorum.
+    • Kubernetes clusterinin kurulumunun basarili olup olmadigini kontrol ediyorum.
 
 mkdir -p ~/.kube
 mv ./kube_config_rancher-cluster.yml $HOME/.kube/config #bu komutla kube_config-cluster.yml dosyasini ./kube/config in icine tasiyorum ki kubectl komutlarini girdigimde oradan okudugu icin anlayabilsin.
@@ -3724,7 +3746,7 @@ git checkout release
 git merge feature/msp-23
 git push origin release
 
-      24. MSP 24 - Install Rancher App on RKE Kubernetes Cluster
+# 24. MSP 24 - Install Rancher App on RKE Kubernetes Cluster
 
 Staging and Production Setup
 Install Rancher App on RKE K8s Cluster
@@ -3740,7 +3762,6 @@ rke down --config ./rancher-cluster.yml
 ```
 
 komutu ile clusteri sokuyorum ve daha sonra yeniden
-
 
 rke up --config ./rancher-cluster.yml
 
@@ -3778,7 +3799,7 @@ kubectl -n cattle-system get pods
 
     • rancher.drsezginerdem.com adresinden rancher servera ulastim.
 
-      25. MSP 25 - Create Staging and Production Environment with Rancher
+# 25. MSP 25 - Create Staging and Production Environment with Rancher
 
 Staging and Production Setup
 Create Staging and Production Environment with Rancher
@@ -3797,7 +3818,7 @@ AMI (RancherOS)   : ami-0e8a3347e4c5959bd #rancherOS AMI kullaniyoruz
 SSH User          : rancher
 Label             : os=rancheros
 
-26. MSP 26 - Prepare a Staging Pipeline
+# 26. MSP 26 - Prepare a Staging Pipeline
 
 Staging Deployment Setup
 Prepare a Staging Pipeline
@@ -3976,7 +3997,7 @@ pipeline {
                 --from-file=.dockerconfigjson=$JENKINS_HOME/.docker/config.json \
                 --type=kubernetes.io/dockerconfigjson
                 """
-                sh "rancher kubectl apply -k k8s/staging/" //bukundugu klasor icindeki customazation.yaml fileina bakacak
+                sh "rancher kubectl apply -k k8s/staging/" //bulundugu klasor icindeki customazation.yaml fileina bakacak
             }
         }
     }
@@ -4003,7 +4024,7 @@ git push origin release
     • Jenkins>Dashboard>newitem>pipeline>petclinic-prod>OK>Build periodically> 59 23 * * 0> Pipeline script from SCM>Git>Repo URL>Branch>release>jenkins/jenkinsfile-petclinic-staging>SAVE and BUILD.
     • Kubernetesde Route 53 kurdum. Clusterdaki bir instancein publicIp adresini al>Route 53>hosted zone>domainName>create record>simple record>define simple record>petclinic-staging.drsezginerdem.com> Ip adress or another value>altina yapistir>define single record>create record. Bu islemlerle route 53 uzerinden siteme ulasabiliyorum.
 
-27. MSP 27 - Prepare a Production Pipeline
+# 27. MSP 27 - Prepare a Production Pipeline
 
 Production Deployment Setup
 Prepare a Production Pipeline
@@ -4018,7 +4039,7 @@ git checkout release
 git branch feature/msp-27
 git checkout feature/msp-27
 
-    • Production pipeline icin ecr repo olusturdum. jenkins Dashboard>new item>freestyleProject>create-ecr-docker-registry-for-petclinic-prod>OK>execute shell>
+  • Production pipeline icin ecr repo olusturdum. jenkins Dashboard>new item>freestyleProject>create-ecr-docker-registry-for-petclinic-prod>OK>execute shell>
 ```bash   
       PATH="$PATH:/usr/local/bin"
       APP_REPO_NAME="sezgin-repo/petclinic-app-staging"
@@ -4083,7 +4104,7 @@ docker push "${IMAGE_TAG_GRAFANA_SERVICE}"
 docker push "${IMAGE_TAG_PROMETHEUS_SERVICE}"
 ```
     • pipeline icin jenkinsfile olusturdum. jenkins/jenkinsfile-petclinic-prod
-
+```groovy
 pipeline {
     agent { label "master" }
     environment {
@@ -4166,7 +4187,7 @@ pipeline {
         }
     }
 }
-
+```
       
     • 5. pipeline kurmak icin petclinic-staging adinda bir pipeline kurdum. jenkins/jenkinsfile-petclinic-prod. Github hook trigger>pipeline script>git>git URL>branch>*/master>jenkins/jenkins-petclinic-prod
 
@@ -4187,7 +4208,7 @@ git push origin master
 
     • BUILD.
 
-28. MSP 28 - Setting Domain Name and TLS for Production Pipeline with Route 53
+# 28. MSP 28 - Setting Domain Name and TLS for Production Pipeline with Route 53
 
 Production Deployment Setup
 Set Domain Name and TLS for Production
@@ -4206,7 +4227,7 @@ export KUBECONFIG=petclinic-config
 
     • bundan sonra yapacagim islemler petclinic clusterini etkileyecek. 
     • Cert-manageri yukledim.
-
+```bash
 kubectl create namespace cert-manager #ns create ettim
 helm repo add jetstack https://charts.jetstack.io #helm repodan instal ettim
 helm repo update #update ettim
@@ -4215,12 +4236,13 @@ kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.1
       cert-manager jetstack/cert-manager \
       --namespace cert-manager \
       --version v1.0.4
+```
     • Ranchera certmanager agentini yukledim.
-
+```bash
 kubectl get pods --namespace cert-manager -o wide #her bir makina icin bir agent kurdum
-
+```
     • Agentin lets encrypt ile irtibata gecip check yapmasi icin k8s/ClusterIssuer/tls-cluster-issuer-prod.yml (dokumantasyonunda var yalnizca mail adresini degistirdim)
-
+```yaml
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
@@ -4241,26 +4263,26 @@ spec:
     - http01:
         ingress:
           class: nginx
-
+```
     • bu yaml dosyasini calistiriyorum. Ve certificate managerimi yukledim/
-
+```bash
 export KUBECONFIG="$HOME/petclinic-config"
 kubectl apply -f k8s/tls-cluster-issuer-prod.yml
 kubectl get clusterissuers letsencrypt-prod -n cert-manager -o wide
-
+```
     • Lets encript firmasi ile challenge yapip sertifika talebinde bulunacagim. Rancerdaki apigateway servisinin icine asagidaki yaml dosyasini ekleyecegim. rancher>sezgin-petclinic-prod>default>load balancer altindaki>api-gateway>view/edit YAML>annotations satirinin altina>
-
+```yaml
 annotations:
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
-
+```
     • ekle. En ustteki Spec altina da>
-
+```yaml
 spec:
   tls:
   - hosts:
     - petclinic.clarusway.us
     secretName: petclinic-tls
-
+```
     • Certifica basari ile alindi.
     • HTTPS ile baglantim basari ile gerceklesti.
     • Commit ve push
@@ -4272,7 +4294,7 @@ git checkout master
 git merge feature/msp-28
 git push origin master
 
-      29. MSP 29 - Monitoring with Prometheus and Grafana
+# 29. MSP 29 - Monitoring with Prometheus and Grafana
 
 Production Deployment Setup
 Set Monitoring Tools
