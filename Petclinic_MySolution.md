@@ -3642,7 +3642,7 @@ chmod 400 ~/.ssh/sezgin-rancher.key
 ```
     • Rancher icin Ubuntu Server 20.04 LTS (HVM) ami-0885b1f6bd170450c (64-bit x86) with t2.medium type, 16 GB root volume, call-rke-cluster-sg security group, sezgin-rke-role IAM Role, Name:Sezgin-Rancher-Cluster-Instance tag, Key = kubernetes.io/cluster/sezgin-Rancher and Value = owned olan baska bir key daha ekledim and sezgin-rancher.key key-pair. 
     •  Rancher dokumantasyonundan bakildiginda Amazona rancher kurulacaksa bu taglari atamamiz gerektigi zaten yaziyor. Bu tagler sayesinde rancher nodelari takip ediyor. EC2 nun Subnet ve security-group icin tag atiyorum Key = kubernetes.io/cluster/sezgin-Rancher and Value = owned. Security groups>sezgin-rke-cluster-sg>tags> manage tags>key= kubernetes.io/cluster/sezgin-Rancher, Value = owned>SAVE. subnets>tags>add new tag> Key = kubernetes.io/cluster/sezgin-Rancher ve Value = owned>SAVE.
-    • Jenkis server a girip docker yukleyecegim. Neden docker yuklemem gerekir Rancher serverimiza rancher kubernetes engine kurmaxxxxx            miz icin dockera ihtiyamiz var.
+    • Jenkis server a girip docker yukleyecegim. Neden docker yuklemem gerekir Rancher serverimiza rancher kubernetes engine kurmamiz icin dockera ihtiyamiz var.
     • Jenkins serveri bastion host olarak kullanip rancher a baglaniyorum.
       ssh -i “sezgin-rancher.key” ubuntu@<ip adresi>.compute.1.amazonaws.com
     • docker yukluyorum.
@@ -3702,8 +3702,9 @@ rke --version
 
     • rancher servere kubernetes kurdum. infrastructure>rancher-cluster.yml ekledim.
 
-  - address: 3.237.46.200 #rancher in public IPsi
-    internal_address: 172.31.67.23 #rancher in private IPsi
+```yaml
+  - address: 18.132.196.64 #rancher in public IPsi
+    internal_address: 172.31.30.252 #rancher in private IPsi
     user: ubuntu 
     role: [controlplane, worker, etcd] #burada bir cluster kuruyoruz normalde ama biz tek bir instance a kurdugumuz icin hepsini tek bir role e atadik. Bunlarin hepsi ayri bir node olurdu gercek bir projede
 
@@ -3722,7 +3723,7 @@ ingress:
   provider: nginx
   options:
     use-forwarded-headers: "true"
-
+```
     • Rancher instance>security groups>edit inbound>add rule>ssh ve custom tcp(6443) ikisine de custom in yanina da jenkins server imin public ip adresini giriyorum.
     • Kubernetes cluster kurmak icin Infrastructure klasorumun icinde asagidaki komutu girdim. RKE tool u jenkins severindan rancer serverina kubernetes clusterinin kurulmunu sagliyor.
 
@@ -3763,39 +3764,53 @@ rke down --config ./rancher-cluster.yml
 
 komutu ile clusteri sokuyorum ve daha sonra yeniden
 
+```bash
 rke up --config ./rancher-cluster.yml
+```
 
 komutu ile clusteri yeniden ayaga kaldiriyorum. Eger instancelari kapatip acmadi isem bu islemleri yapmama gerek yok. Asagidaki komutu yeniden girmem gerekiyor
 
+```bash
 mv ./kube_config_rancher-cluster.yml $HOME/.kube/config
+```
 
     • Helm kurulumu icin asagidaki komutu giriyorum
 
+```bash
 curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
 helm version
+```
 
     • Helm nedir? Yum gibi apt gibi package yonetim sistemidir. Chart bir nevi image, repository imagelarin bulundugu yer, release ise charti kurdugumuz calistirdigimiz sey bir nevi containerdir. Hemlerin bulundugu docker-hub gibi bir repository var.
     • Rancherin chartini indiriyorum ve helm repolari listeliyorum.
 
+```bash
 helm repo add rancher-latest https://releases.rancher.com/server-charts/latest
 helm repo list
+```
 
     • Namespace kuruyorum.
 
+```bash
 kubectl create namespace cattle-system
+```
 
     • Rancher yukluyorum.
 
+```bash
 helm install rancher rancher-latest/rancher \
   --namespace cattle-system \
-  --set hostname=rancher.drsezginerdem.com \
+  --set hostname=rancher.onecard.click \
   --set tls=external \
   --set replicas=1
+```
 
     • Rancher server basarili bir bicimde deploy edildi mi kontrol ediyorum.
 
+```bash
 kubectl -n cattle-system get deploy rancher
 kubectl -n cattle-system get pods
+```
 
     • rancher.drsezginerdem.com adresinden rancher servera ulastim.
 
