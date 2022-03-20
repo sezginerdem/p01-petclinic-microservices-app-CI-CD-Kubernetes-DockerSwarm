@@ -3647,19 +3647,19 @@ chmod 400 ~/.ssh/sezgin-rancher.key
       ssh -i “sezgin-rancher.key” ubuntu@<ip adresi>.compute.1.amazonaws.com
     • docker yukluyorum.
 
-# Set hostname of instance
+## Set hostname of instance
 sudo hostnamectl set-hostname rancher-instance-1
-# Update OS 
+## Update OS 
 sudo apt-get update -y
 sudo apt-get upgrade -y
-# Install and start Docker on Ubuntu 20.04
+## Install and start Docker on Ubuntu 20.04
 sudo apt install docker.io -y  
 sudo systemctl start docker
 sudo systemctl enable docker
-# Add ubuntu user to docker group
+## Add ubuntu user to docker group
 sudo usermod -aG docker ubuntu
 newgrp docker
-#docker control
+## Docker control
 docker version
 
     • ALB kuracagim ama bunun icin bir target gruba ihtiyacim var. AWS Console>target groups>create target group>groupname>sezgin-rancher-http-80-tg>path>/healths>healthy treshold 3>unhealthy threshold 3>interal 10 NEXT sezgin-rancher-cluster-instance secilecek>include as pending below>create target group. Boylelikle target group olustu,
