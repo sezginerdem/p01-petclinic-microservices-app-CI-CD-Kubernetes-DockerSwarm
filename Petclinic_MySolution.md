@@ -3007,7 +3007,6 @@ docker image prune -af //imagelar jenkins servisde kalmasin bosuna yer kaplamasi
       
 # 21. MSP 21 - Prepare a QA Pipeline
 
-
 QA Setup for Release
 Prepare a QA Pipeline
 MSP-21
@@ -3125,13 +3124,11 @@ git push origin release
 
 # 22. MSP 22 - Prepare Petlinic Kubernetes YAML Files
 
-
 Staging and Production Setup
 Prepare Petlinic Kubernetes YAML Files
 MSP-22
 Prepare Petlinic Kubernetes YAML Files for Staging and Production Pipelines.
 feature/msp-22
-
 
     • feature ekledim.
       
@@ -3141,6 +3138,7 @@ git checkout feature/msp-22
 
     • k8s folderi olusturdum.
     • K8s nin altinda docker-compose.yml fileini olusturdum. Docker-Compose.yaml dan k8s olusturdum. Deployment ve ingresse ihtiyacim var.
+
 ```yaml
 version: '3'
 services:
@@ -3252,6 +3250,7 @@ kompose convert -f k8s/docker-compose.yml -o k8s/base #docker-compose.yml fileni
 ```
 
     • customers-service-ingress.yaml fileinin guncelledim. Ilgili kisimlari guncelliyorum. Tum dosyasinin icerigi bu sekilde olmayacak.
+
 ```yaml
 metadata:
   annotations:
@@ -3272,6 +3271,7 @@ spec:
 ```
 
     • visits-service-ingress.yaml fileini guncelledim. Ilgili kisimlari guncelliyorum. Tum dosyanin icerigi bu sekilde olmayacak.
+
 ```yaml
 metadata:
   annotations:
@@ -3288,6 +3288,7 @@ spec:
 ```
 
     • vets-service-ingress.yaml fileini guncelledim. Ilgili kisimlari guncelliyorum. Tum dosyasinin icerigi bu sekilde olmayacak.
+
 ```yaml
 metadata:
   annotations:
@@ -3306,6 +3307,7 @@ spec:
     • Envsubst komutu: envsubst < ./envsubst-test > ./new-envsubst-test  bu komutla /envsubst-test dosyasinin icindeki keylerin value larini ./new-envsubst-test dosyasina yazdiriyor
 
     • Base>kustomization-template.yml isimli filei koy. Asagidaki imagelari servicelerin deployment dosyalarindan aliyor. Imagelardaki name imagein isminin eski hali ben bu ismi her build ettikten sonra degistirmek istiyorum. Yeni imagain ismini bu tool sayesinde deployment dosyalarina koymak istiyorum. 
+
 ```yaml
 resources:
 - admin-server-deployment.yaml
@@ -3358,6 +3360,7 @@ images:
   newName: "${IMAGE_TAG_PROMETHEUS_SERVICE}"
 ```
     • k8s/staging/kustomization.yml ekledim. Namespace ekle. Sonra base klasoru icine replica-count yamli bul dedim. Bundakilere bakarak kustomize yaptim.
+
 ```yaml
 # kustomization.yml
 namespace: "petclinic-staging-ns"
@@ -3367,6 +3370,7 @@ patches:
 - replica-count.yml
 ```
     • k8s/staging/replica-count.yml filelarini ekledim. Bastaki bilgiler apiversion, kind, metadata sonra degistirilecek kismi giriyorum. Bu bilgileri ilgili yerde kustomize ediyorum
+
 ```yaml
 # replica-count.yml
 apiVersion: apps/v1
@@ -3440,6 +3444,7 @@ spec:
         path: /api/visit(/|$)(.*)
 ```
     • k8s/prod/kustomization.yml dosyasini koydum.#pod icindeki kustomization dosyami kontrol ettim. Kustomization komutu ne yapiyor k8s/prod daki kustomization.yml dosyasina bakiyor. Bu dosyanin icinde asagidaki yaml var. . ../base e bak onun icindeki kustomization.yml I bul.  Oradaki resources lara bak onlarin her birisine namespace ekle. Bunu yaparak bunun ciktisini da ekrana cikariyor.
+
 ```yaml
 # kustomization.yml
 namespace: "petclinic-prod-ns"
@@ -3449,6 +3454,7 @@ patches:
 - replica-count.yml
 ```
     • k8s/prod/replica-count.yml dosyasini koydum. Api-gateway in replicasini 5 yap. 
+
 ```yaml
 # replica-count.yml
 apiVersion: apps/v1
@@ -3460,6 +3466,7 @@ spec:
 ```
 
     • kubectl I yukledim ve setup ini yaptim.
+
 ```bash
 curl -o kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.18.9/2020-11-02/bin/linux/amd64/kubectl
 sudo mv kubectl /usr/local/bin/kubectl
@@ -3467,6 +3474,7 @@ chmod +x /usr/local/bin/kubectl
 kubectl version --short --client
 ```
     • kustomization. Tool unun calistigini kontrol ediyorum. Export ederek env variable giriyorum. 
+
 ```bash
 #export ile env variable giriyorum.
 
@@ -3703,10 +3711,10 @@ rke --version
     • rancher servere kubernetes kurdum. infrastructure>rancher-cluster.yml ekledim.
 
 ```yaml
-  - address: 18.132.196.64 #rancher in public IPsi
-    internal_address: 172.31.30.252 #rancher in private IPsi
-    user: ubuntu 
-    role: [controlplane, worker, etcd] #burada bir cluster kuruyoruz normalde ama biz tek bir instance a kurdugumuz icin hepsini tek bir role e atadik. Bunlarin hepsi ayri bir node olurdu gercek bir projede
+- address: 18.132.196.64 #rancher in public IPsi
+  internal_address: 172.31.30.252 #rancher in private IPsi
+  user: ubuntu 
+  role: [controlplane, worker, etcd] #burada bir cluster kuruyoruz normalde ama biz tek bir instance a kurdugumuz icin hepsini tek bir role e atadik. Bunlarin hepsi ayri bir node olurdu gercek bir projede
 
 services:
   etcd:
@@ -3724,19 +3732,23 @@ ingress:
   options:
     use-forwarded-headers: "true"
 ```
+
     • Rancher instance>security groups>edit inbound>add rule>ssh ve custom tcp(6443) ikisine de custom in yanina da jenkins server imin public ip adresini giriyorum.
     • Kubernetes cluster kurmak icin Infrastructure klasorumun icinde asagidaki komutu girdim. RKE tool u jenkins severindan rancer serverina kubernetes clusterinin kurulmunu sagliyor.
 
+```bash
 rke up --config ./rancher-cluster.yml
+```
 
     • Kubernetes clusterinin kurulumunun basarili olup olmadigini kontrol ediyorum.
 
+```bash
 mkdir -p ~/.kube
 mv ./kube_config_rancher-cluster.yml $HOME/.kube/config #bu komutla kube_config-cluster.yml dosyasini ./kube/config in icine tasiyorum ki kubectl komutlarini girdigimde oradan okudugu icin anlayabilsin.
 chmod 400 ~/.kube/config
 kubectl get nodes
 kubectl get pods --all-namespaces
-
+```
     • Kubernetes kurulumu tamamlandi ama rancher kurulumu tamamlanmadi. Normalde bunlari githubda tutmayiz ancak bu egitim maksatli oldugu icin tutuyoruz. Git ignore ile bunlari gonderme diyebiliriz.
     • Commit and change
 
