@@ -3833,7 +3833,7 @@ Create Staging and Production Environment with Rancher
 MSP-25
 Create Staging and Production Environment with Rancher by creating new cluster for Petclinic
 
-    • new Password>confirm Password>manage multiple clusters>allow collection>I agree>cCONTINUE eger hata olursa helm uninstall ile tekrar kaldirip kurabilirim.
+    • new Password>confirm Password>manage multiple clusters>allow collection>I agree>CONTINUE eger hata olursa helm uninstall ile tekrar kaldirip kurabilirim.
     • Rancherin AWS deki resourcelarimi yonetmesi icin Cloud credential tanimlayacagim. Sagda kosedeki isarette>cloud credential>add cloud credential>access key ve secret keyleri girdim>name>sezgin-aws-training-account.
     • Ayni yerden sagdaki ust koseden>Node templates>add template>amazon ec2>cloud credential>sezgin-aws-training-account>next>default vpc>select security group>standard>instance ozellikleri asagidaki gibi olacak>name>sezgin>key=os>value=rancheros OK diyerek tamamliyorum.
       
