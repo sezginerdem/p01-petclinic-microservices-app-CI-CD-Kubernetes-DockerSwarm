@@ -1,5 +1,6 @@
 # Petclinic Microservices My Solution
 
+
 * Work/Git Flow tanimlandi, projede nasil yapilacagi konusunda aciklamalar yapildi.
 * Back-endi java ile front-endi ise react ve html ile yazildi.
 * Proje Spring firmasi tarafindan gelistirilmis Java tabanli bir pet klinik web uygulamasi. Uygulama bir veritabani kullanmiyor. Kapatildiktan sonra veriler kayboluyor. Program test amacli yapildigi icin kisitli ozelliklere sahip. Home, owners ve veterenians olmak uzere 3 ana menusu var. 
